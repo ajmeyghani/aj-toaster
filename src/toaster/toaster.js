@@ -20,7 +20,7 @@ function ToastProvider(props) {
 
   return (
     <ToasterContext.Provider value={{add, remove, toasts}}>
-      <div className="aj-toaster">
+      <div className="aj-toaster toaster--default-theme">
         {toasts.map(({message, id}) => (
           <li key={id}>{message} - {id}
             <button onClick={onRemove(id)}>&times;</button>
