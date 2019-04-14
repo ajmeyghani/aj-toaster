@@ -11,3 +11,6 @@ dist
 dist-dev
 node_modules
 src
+webpack.config.js
+.nvmrc
+readme.md

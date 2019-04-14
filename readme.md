@@ -1,7 +1,5 @@
 # Toast Provider for React [WIP]
 
-TOOD...
-
 ## Install
 
 - Using `npm`: `npm i aj-toaster -S`
@@ -14,24 +12,33 @@ Wrap your component with the `Toaster` provider and get a toast notification man
 **index.js**
 
 ```js
+import React from "react";
+import ReactDom from "react-dom";
+import App from "app/app";
 import Toaster from "aj-toaster";
-<Toaster>
+
+ReactDom.render(
+<Toaster> // <-- wrap your app here.
   <App />
-</Toaster>
+</Toaster>, document.querySelector("#app"));
 ```
 
 **app.js**
 
 ```js
 import React from "React";
-import {useToaster} from "aj-toaster";
+import {useToaster} from "aj-toaster"; // <-- use toaster
 function App() {
   const toaster = useToaster();
   const handleAdd = () => {
-    toaster.add("message 1");
+    toaster.add("message 1"); // <-- call add.
   };
   return (<div>
     <button onClick={handleAdd}>Add</button>
   </div>);
 }
 ```
+
+## Styles
+
+Todo: add more docs.
