@@ -42,3 +42,13 @@ function App() {
 ## Styles
 
 Todo: add more docs.
+
+## Development
+
+- Install latest version of Node 10 `nvm install 10`.
+- Run `yarn install` to install all the dependencies.
+- Develop in the `src` folder and run `yarn build` to build to `umd/` and `./toaster.mjd`.
+
+**TODOS**
+
+- [] Make the first version.

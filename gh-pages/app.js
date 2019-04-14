@@ -5,9 +5,10 @@ import "./app.css";
 function App() {
   const toaster = useToaster();
   const handleAdd = () => {
-    toaster.add("message 1");
+    toaster.add("message");
   };
   return (<div>
+    <h2>Simple Toaster</h2>
     <p>total: {toaster.toasts.length}</p>
     <button onClick={handleAdd}>Add</button>
   </div>);

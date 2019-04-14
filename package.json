@@ -1,6 +1,6 @@
 {
   "name": "aj-toaster",
-  "version": "0.1.12",
+  "version": "0.1.14",
   "description": "Notification toast provider for React.",
   "author": "AJ Meyghani",
   "license": "MIT",
@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/ajmeyghani/aj-toaster/issues"
   },
-  "homepage": "https://github.com/ajmeyghani/aj-toaster#readme",
+  "homepage": "https://ajmeyghani.github.io/aj-toaster",
   "keywords": [
     "ui",
     "react",
@@ -29,7 +29,7 @@
   "scripts": {
     "build": "rollup --config",
     "lint": "eslint -c eslint.config.js src webpack.config.js rollup.config.js --fix",
-    "gh": "gh-pages -d gh-pages/dist"
+    "gh": "yarn build && cp gh-pages/index.html gh-pages/dist/ && gh-pages -d gh-pages/dist"
   },
   "peerDependencies": {
     "react": "^16.8.0",
