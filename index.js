@@ -82,10 +82,10 @@
     const toaster = useToaster();
 
     const handleAdd = () => {
-      toaster.add("message 1");
+      toaster.add("message");
     };
 
-    return React__default.createElement("div", null, React__default.createElement("p", null, "total: ", toaster.toasts.length), React__default.createElement("button", {
+    return React__default.createElement("div", null, React__default.createElement("h2", null, "Simple Toaster"), React__default.createElement("p", null, "total: ", toaster.toasts.length), React__default.createElement("button", {
       onClick: handleAdd
     }, "Add"));
   }
