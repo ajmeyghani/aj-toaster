@@ -1,7 +1,10 @@
 .DS_Store
-dist
-build
-dist-dev
+/dist
+/dist-dev
+/build
+/toaster.mjs
+/umd
+gh-pages/dist
 node_modules
 pids
 *.pid
@@ -11,5 +14,3 @@ coverage
 .cache
 .logs
 *.log
-toaster.mjs
-umd

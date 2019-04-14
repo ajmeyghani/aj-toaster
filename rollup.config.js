@@ -6,7 +6,6 @@ import postcss from "rollup-plugin-postcss";
 import clear from "rollup-plugin-clear";
 
 const name = "aj_toaster";
-const path = "dist/toaster";
 const src = "src/toaster/toaster.js";
 
 const globals = {
@@ -28,7 +27,7 @@ const resolveConf = resolve({
 });
 
 const clean = clear({
-  targets: ["dist", "umd"],
+  targets: ["umd", "gh-pages/dist", "toaster.mjs"],
   watch: false,
 });
 
@@ -105,7 +104,7 @@ export default [
     input: "gh-pages/index.js",
     output: {
       name,
-      file: path + ".index.min.js",
+      file: "./gh-pages/dist/index.min.js",
       format: "umd",
       exports: "named",
       globals,
@@ -117,7 +116,7 @@ export default [
     input: "gh-pages/index.js",
     output: {
       name,
-      file: path + ".index.js",
+      file: "./gh-pages/dist/index.js",
       format: "umd",
       exports: "named",
       globals,
