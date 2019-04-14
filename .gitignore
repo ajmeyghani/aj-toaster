@@ -10,3 +10,4 @@ dist
 dist-dev
 node_modules
 .DS_Store
+toaster
