@@ -27,9 +27,14 @@
     "/readme.md"
   ],
   "scripts": {
-    "build": "rollup --config",
-    "lint": "eslint -c eslint.config.js src webpack.config.js rollup.config.js --fix",
-    "gh": "yarn build && cp gh-pages/index.html gh-pages/dist/ && gh-pages -d gh-pages/dist"
+    "build": "rollup --config rollup.config.js",
+    "lint": "eslint -c eslint.config.js src rollup*.js --fix",
+    "gh": "NODE_ENV=production rollup --config rollup.gh.js && cp gh-pages/index.html gh-pages/dist/ && gh-pages -d gh-pages/dist",
+    "gh:watch": "rollup --config rollup.gh.js --watch",
+    "push": "yarn build && npm publish",
+    "publish:patch": "npm version patch && yarn push",
+    "publish:minor": "npm version minor && yarn push",
+    "publish:major": "npm version major && yarn push"
   },
   "peerDependencies": {
     "react": "^16.8.0",

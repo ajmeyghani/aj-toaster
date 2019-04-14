@@ -1,12 +1,16 @@
+/*
+* config for gh-pages.
+*/
+
 import babel from "rollup-plugin-babel";
 import commonjs from "rollup-plugin-commonjs";
 import resolve from "rollup-plugin-node-resolve";
 import {terser} from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import clear from "rollup-plugin-clear";
+const IS_PROD = process.env.NODE_ENV === "production";
 
 const name = "aj_toaster";
-const src = "src/toaster/toaster.js";
 
 const globals = {
   "prop-types": "PropTypes",
@@ -27,7 +31,7 @@ const resolveConf = resolve({
 });
 
 const clean = clear({
-  targets: ["umd", "toaster.mjs"],
+  targets: ["gh-pages/dist"],
   watch: false,
 });
 
@@ -50,28 +54,12 @@ const devPlugins = [
   clean,
 ];
 
-export default [
+const entries = [
   {
-    input: src,
+    input: "gh-pages/index.js",
     output: {
       name,
-      file: "./toaster.mjs",
-      format: "esm",
-      exports: "named",
-    },
-    external: [...external, "raf"],
-    plugins: [
-      babel(babelOptions()),
-      postCssConfig,
-      resolveConf,
-      clean,
-    ],
-  },
-  {
-    input: src,
-    output: {
-      name,
-      file: "./umd/toaster.js",
+      file: "./gh-pages/dist/index.js",
       format: "umd",
       exports: "named",
       globals,
@@ -79,16 +67,23 @@ export default [
     external,
     plugins: devPlugins,
   },
-  {
-    input: src,
+];
+
+if (IS_PROD) {
+  const prodEntry = {
+    input: "gh-pages/index.js",
     output: {
       name,
-      file: "./umd/toaster.min.js",
+      file: "./gh-pages/dist/index.min.js",
       format: "umd",
       exports: "named",
       globals,
     },
     external,
     plugins: [...devPlugins, terser()],
-  },
-];
+  };
+
+  entries.push(prodEntry);
+}
+
+export default entries;
