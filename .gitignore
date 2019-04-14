@@ -1,3 +1,8 @@
+.DS_Store
+dist
+build
+dist-dev
+node_modules
 pids
 *.pid
 *.seed
@@ -6,8 +11,3 @@ coverage
 .cache
 .logs
 *.log
-dist
-dist-dev
-node_modules
-.DS_Store
-toaster

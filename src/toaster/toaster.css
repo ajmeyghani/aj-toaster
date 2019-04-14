@@ -1,0 +1,7 @@
+.aj-toaster {
+  position: absolute;
+  top: 0;
+  right: 0;
+  --border-color: red;
+  border: 1px solid var(--border-color);
+}

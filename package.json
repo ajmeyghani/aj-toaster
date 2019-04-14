@@ -1,6 +1,6 @@
 {
   "name": "aj-toaster",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Notification toast provider for React.",
   "author": "AJ Meyghani",
   "repository": {
@@ -16,7 +16,7 @@
     "react",
     "toast"
   ],
-  "main": "toaster/toaster.js",
+  "main": "build/toaster.js",
   "scripts": {
     "build": "NODE_ENV=production webpack",
     "dev:build": "webpack"

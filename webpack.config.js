@@ -16,7 +16,7 @@ module.exports = {
     toaster: path.resolve("src/toaster/toaster"),
   },
   output: {
-    path: path.resolve("toaster"),
+    path: path.resolve("build"),
     filename: "[name].js",
     libraryTarget: 'umd',
   },
