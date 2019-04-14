@@ -1,0 +1,11 @@
+pids
+*.pid
+*.seed
+.lock-wscript
+coverage
+.cache
+.logs
+*.log
+dist
+node_modules
+.DS_Store
