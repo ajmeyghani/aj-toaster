@@ -1,4 +1,4 @@
-import React from "React";
+import React from "react";
 import {useToaster} from "toaster/toaster";
 import "./app.css";
 

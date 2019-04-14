@@ -1,10 +1,9 @@
 const path = require("path");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const IS_PROD = process.env.NODE_ENV === "production";
 
 module.exports = {
-  mode: IS_PROD ? "production" : "development",
+  mode: "development",
   devtool: "source-map",
   resolve: {
     extensions: ["*", ".js", ".jsx", ".json"],
@@ -14,7 +13,7 @@ module.exports = {
     ],
   },
   entry: {
-    toaster: path.resolve("src/toaster/toaster"),
+    "toaster": path.resolve("src/toaster/toaster"),
     "docs/index.js": path.resolve("gh-pages/index.js"),
   },
   output: {
@@ -52,7 +51,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: "index.html",
       chunks: ["docs/index.js"],
-      template: path.resolve(`gh-pages/${IS_PROD ? "index.prod.html" : "index.html"}`),
+      template: path.resolve("gh-pages/index.html"),
       hash: true,
     }),
   ],
