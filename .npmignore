@@ -14,3 +14,6 @@ src
 webpack.config.js
 .nvmrc
 readme.md
+gh-pages
+build/docs
+build/index.html

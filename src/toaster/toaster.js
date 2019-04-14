@@ -1,10 +1,10 @@
-import "./toaster.css";
+import React, {createContext, useState, useContext} from "react";
+import "toaster/toaster.css";
 
-
-const ToasterContext = React.createContext();
+const ToasterContext = createContext();
 
 function ToastProvider(props) {
-  const [toasts, setToasts] = React.useState([]);
+  const [toasts, setToasts] = useState([]);
 
   const add = message => {
     setToasts([...toasts, {
@@ -32,7 +32,7 @@ function ToastProvider(props) {
   );
 }
 
-const useToaster = () => React.useContext(ToasterContext);
+const useToaster = () => useContext(ToasterContext);
 
 export {
   ToastProvider as default,
