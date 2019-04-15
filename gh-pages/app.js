@@ -17,15 +17,15 @@ function App() {
 
   const addFailure = () => {
     toaster.failure("Couldn't save the data to the database...");
-  }
+  };
 
   const addWarning = () => {
     toaster.warning("Try again...");
-  }
+  };
 
   const addInfo = () => {
     toaster.info("Here is some extra information.");
-  }
+  };
 
   return (
     <div className="my-page">

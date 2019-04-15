@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext, useEffect} from "react";
+import React, {createContext, useState, useContext} from "react";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import "toaster/toaster.css";
 
