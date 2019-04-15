@@ -11,11 +11,6 @@ function ToastProvider(props) {
     console.log("new toasts", toasts);
   }, [toasts])
 
-  const success = message => add({
-    title: "Success!",
-    message,
-  });
-
   const add = ({message, title}) => {
     if (!message) {
       throw new Error(
@@ -26,34 +21,58 @@ function ToastProvider(props) {
       id: +new Date(),
       message: message,
       title: title ? title : "",
-      isVis: true,
+      isVisible: false,
     }]);
-
-    let id;
-
-    id = setTimeout(() => {
-      setToasts(prev => {
-        const copy = [...prev];
-        let last = copy[copy.length - 1];
-        last.isVis = false;
-        // if (last) {
-        //   copy[copy.length - 1].isVis = false;
-        //   return copy;
-        // }
-        return copy;
-      })
-    }, 2000);
   };
 
   const remove = id => setToasts(
     prev => prev.filter(t => t.id !== id));
 
+  const success = message => add({
+    title: "Success!",
+    message,
+  });
+
+  const setVisible = (id) => {
+    setToasts(prev => {
+      const copy = [...prev];
+      for (let t of copy) {
+        if (t.id === id) {
+          t.isVisible = true;
+        }
+      }
+      return copy;
+    });
+  };
+
+  const setInvisible = (id) => {
+    setTimeout(() => {
+      remove(id);
+    }, 200)
+
+    setToasts(prev => {
+      const copy = [...prev];
+      for (let t of copy) {
+        if (t.id === id) {
+          t.isVisible = false;
+        }
+      }
+      return copy;
+    });
+  };
+
   return (
-    <ToasterContext.Provider value={{add, remove, toasts, success}}>
+    <ToasterContext.Provider value={{add, success, toasts}}>
       <div className={`aj-toaster --${theme}`}>
        <ul>
          {toasts.map((toast) => (
-           <Toast key={toast.id} toast={toast} remove={remove}></Toast>
+           <Toast
+            key={toast.id}
+            toast={toast}
+            remove={remove}
+            setInvisible={setInvisible}
+            setVisible={setVisible}>
+          </Toast>
          ))}
        </ul>
       </div>
@@ -63,37 +82,17 @@ function ToastProvider(props) {
 }
 
 function Toast(props) {
-  const [isVisible, setIsVisible] = useState(false);
-  const {id, title, message, isVis} = props.toast;
+  const {id, title, message, isVisible} = props.toast;
+  const {remove, setVisible, setInvisible} = props;
+  const onInvis = id => () => setInvisible(id);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 20)
-    return () => setIsVisible(false);
-  }, []);
-
-
-  useEffect(() => {
-    let timeoutID;
-    console.log(isVis, id);
-    if (!isVis) {
-      setIsVisible(false);
-      timeoutID = setTimeout(() => {
-        remove(id);
-      }, 200);
-      console.log(timeoutID)
+    if (id && !isVisible) {
+      setTimeout(() => {
+        setVisible(id);
+      }, 50)
     }
-    return () => clearTimeout(timeoutID);
-  }, [isVis, id]);
-
-  const {remove} = props;
-  const onRemove = id => () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      remove(id);
-    }, 200);
-  };
+  }, []);
 
   return (
     <li className={`--toast-success ${isVisible ? "visible" : ""}`}>
@@ -101,10 +100,10 @@ function Toast(props) {
         {
          title ? <p className="toast-content__title">{title}</p> : null
         }
-        <p className="toast-content__body">{message} {isVis ? "true" : "false"}</p>
+        <p className="toast-content__body">{message} {isVisible ? "true" : "false"}</p>
       </div>
       <div className="toast-dismiss">
-        <button onClick={onRemove(id)}>&times;</button>
+        <button onClick={onInvis(id)}>&times;</button>
       </div>
     </li>
   );
