@@ -1,8 +1,19 @@
 .my-page {
-  padding: 20px;
-  padding-top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .buttons {
-  width: 200px;
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.buttons button {
+  flex: 1 0 0;
+  margin-right: 10px;
 }

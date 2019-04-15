@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="my-page">
-      <h2 className="siimple-h2">Simple Toaster</h2>
+      <h2 className="siimple-h2">Toaster 0.3.1</h2>
       <p className="siimple-p">total: {toaster.toasts.length}</p>
       <div className="buttons">
         <button
