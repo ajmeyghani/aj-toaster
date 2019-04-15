@@ -36,14 +36,13 @@
     }
   }
 
-  var css = ".aj-toaster {\n  position: fixed;\n  top: 0;\n  right: 0;\n  width: 320px;\n  display: flex;\n  justify-content: center;\n}\n\n.aj-toaster ul,\n.aj-toaster ul li {\n  margin-block-start: 0;\n  margin-block-end: 0;\n  margin-inline-start: 0;\n  margin-inline-end: 0;\n  padding-inline-start: 0;\n  padding: 0;\n  margin: 0;\n  list-style: none;\n  list-style-type: none;\n}\n\n.aj-toaster p, .aj-toaster .copy,\n.aj-toaster h1, .aj-toaster .title1,\n.aj-toaster h2, .aj-toaster .title2 {\n  padding: 0;\n  margin: 0;\n}\n\n.aj-toaster .success {\n  display: flex;\n  min-width: 310px;\n  max-width: 310px;\n  box-sizing: border-box;\n  color: #fff;\n  font-family: sans-serif;\n  background: #41d888;\n  border-radius: 3px;\n  margin: 5px 0;\n}\n\n.aj-toaster .toast-icon {\n  flex: 0 0 23px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 18px;\n  margin-right: 14px;\n}\n.aj-toaster .toast-content {\n  flex: 1 0 0;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-evenly;\n  min-height: 37px;\n  padding: 8px 0 8px 16px;\n}\n.aj-toaster .toast-dismiss {\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n  padding: 5px 5px 0 0;\n}\n\n.aj-toaster .toast-content__title {\n  font-weight: 400;\n  font-size: 14px;\n}\n\n.aj-toaster .toast-content__body {\n  font-weight: 100;\n  font-size: 12px;\n}\n\n.aj-toaster .toast-dismiss button {\n  background: none;\n  border: none;\n  color: #fff;\n  font-size: 1rem;\n  padding: 0;\n  margin: 0;\n  line-height: 0;\n  position: relative;\n  top: 5px;\n}\n\n.aj-toaster.--default-theme {\n  color: #000;\n}\n\n.aj-toaster.--simple-theme {\n  color: blue;\n}\n";
+  var css = ".aj-toaster {\n  position: fixed;\n  top: 0;\n  right: 0;\n  width: 320px;\n  display: flex;\n  justify-content: center;\n}\n\n.aj-toaster ul,\n.aj-toaster ul li {\n  margin-block-start: 0;\n  margin-block-end: 0;\n  margin-inline-start: 0;\n  margin-inline-end: 0;\n  padding-inline-start: 0;\n  padding: 0;\n  margin: 0;\n  list-style: none;\n  list-style-type: none;\n}\n\n.aj-toaster p, .aj-toaster .copy,\n.aj-toaster h1, .aj-toaster .title1,\n.aj-toaster h2, .aj-toaster .title2 {\n  padding: 0;\n  margin: 0;\n}\n\n.aj-toaster .--toast-success {\n  display: flex;\n  min-width: 310px;\n  max-width: 310px;\n  box-sizing: border-box;\n  color: #fff;\n  font-family: sans-serif;\n  background: #41d888;\n  border-radius: 3px;\n  margin: 5px 0;\n  transition: all 300ms ease-in-out;\n  opacity: 0;\n}\n\n.--toast-success.visible {\n  opacity: 1;\n}\n\n.aj-toaster .toast-icon {\n  flex: 0 0 23px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 18px;\n  margin-right: 14px;\n}\n.aj-toaster .toast-content {\n  flex: 1 0 0;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-evenly;\n  min-height: 37px;\n  padding: 8px 0 8px 16px;\n}\n.aj-toaster .toast-dismiss {\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n  padding: 5px 5px 0 0;\n}\n\n.aj-toaster .toast-content__title {\n  font-weight: 400;\n  font-size: 14px;\n}\n\n.aj-toaster .toast-content__body {\n  font-weight: 100;\n  font-size: 12px;\n}\n\n.aj-toaster .toast-dismiss button {\n  background: none;\n  border: none;\n  color: #fff;\n  font-size: 1rem;\n  padding: 0;\n  margin: 0;\n  line-height: 0;\n  position: relative;\n  top: 5px;\n}\n\n/* todo */\n.aj-toaster.--default-theme {\n  color: #000;\n}\n\n.aj-toaster.--simple-theme {\n  color: #000;\n}\n";
   styleInject(css);
 
   const ToasterContext = React.createContext();
 
   function ToastProvider(props) {
     const [toasts, setToasts] = React.useState([]);
-    console.log(props.theme);
     const theme = props.theme ? props.theme : "default-theme";
 
     const success = message => add({
@@ -55,6 +54,10 @@
       message,
       title
     }) => {
+      if (!message) {
+        throw new Error("Need to provide a string value for the message field.");
+      }
+
       setToasts([...toasts, {
         id: +new Date(),
         message: message,
@@ -63,8 +66,6 @@
     };
 
     const remove = id => setToasts(prev => prev.filter(t => t.id !== id));
-
-    const onRemove = id => () => remove(id);
 
     return React__default.createElement(ToasterContext.Provider, {
       value: {
@@ -75,13 +76,39 @@
       }
     }, React__default.createElement("div", {
       className: `aj-toaster --${theme}`
-    }, React__default.createElement("ul", null, toasts.map(({
-      message,
+    }, React__default.createElement("ul", null, toasts.map(toast => React__default.createElement(Toast, {
+      key: toast.id,
+      toast: toast,
+      remove: remove
+    })))), props.children);
+  }
+
+  function Toast(props) {
+    const [isVisible, setIsVisible] = React.useState(false);
+    React.useEffect(() => {
+      setTimeout(() => {
+        setIsVisible(true);
+      }, 20);
+      return () => setIsVisible(false);
+    }, []);
+    const {
       id,
-      title
-    }) => React__default.createElement("li", {
-      className: "success",
-      key: id
+      title,
+      message
+    } = props.toast;
+    const {
+      remove
+    } = props;
+
+    const onRemove = id => () => {
+      setIsVisible(false);
+      setTimeout(() => {
+        remove(id);
+      }, 200);
+    };
+
+    return React__default.createElement("li", {
+      className: `--toast-success ${isVisible ? "visible" : ""}`
     }, React__default.createElement("div", {
       className: "toast-content"
     }, title ? React__default.createElement("p", {
@@ -92,7 +119,7 @@
       className: "toast-dismiss"
     }, React__default.createElement("button", {
       onClick: onRemove(id)
-    }, "\xD7")))))), props.children);
+    }, "\xD7")));
   }
 
   const useToaster = () => React.useContext(ToasterContext);
@@ -105,6 +132,9 @@
 
   function App() {
     const toaster = useToaster();
+    React.useEffect(() => {
+      toaster.success("Your post was created successfully!");
+    }, []);
 
     const handleAdd = () => {
       toaster.add({
@@ -112,9 +142,6 @@
       });
     };
 
-    React.useEffect(() => {
-      toaster.success("Your post was created successfully!");
-    }, []);
     return React__default.createElement("div", {
       className: "my-page"
     }, React__default.createElement("h2", {
@@ -122,8 +149,8 @@
     }, "Simple Toaster"), React__default.createElement("p", {
       className: "siimple-p"
     }, "total: ", toaster.toasts.length), React__default.createElement("button", {
-      className: "siimple-btn siimple-btn--primary",
-      onClick: handleAdd
+      onClick: handleAdd,
+      className: "siimple-btn siimple-btn--primary"
     }, "Add a Toast"));
   }
 
