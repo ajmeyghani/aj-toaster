@@ -31,7 +31,7 @@ import {useToaster} from "aj-toaster"; // <-- use toaster
 function App() {
   const toaster = useToaster();
   const handleAdd = () => {
-    toaster.add("message 1"); // <-- call add.
+    toaster.success("Post was created!"); // <-- call add.
   };
   return (<div>
     <button onClick={handleAdd}>Add</button>
