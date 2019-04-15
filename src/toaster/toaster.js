@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext} from "react";
+import React, {createContext, useState, useContext, useEffect} from "react";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import "toaster/toaster.css";
 
@@ -17,23 +17,50 @@ const THEMES = {
   simple: "simple-theme",
 };
 
+
 function ToastProvider(props) {
   const [toasts, setToasts] = useState([]);
+  const [timeOuts, setTimeouts] = useState([]);
   const theme = props.theme || THEMES.default;
 
+  /* TODO */
+  /* manage timeout functions */
+  useEffect(() => {
+    return () => {
+      if (timeOuts.length > 5) {
+        setTimeouts([]);
+      }
+    }
+  }, [timeOuts]);
+
   /* adds toasts to the list */
-  const add = ({message, title, type}) => {
+  const add = ({message, title, type}, dismissOpt) => {
     if (!message) {
       throw new Error(
         "Need to provide a string value for the message field.");
     }
 
+    const isAutoDismiss = dismissOpt ? Boolean(dismissOpt.dismiss) : false;
+    const dismissPeriod = isAutoDismiss ? dismissOpt.dismiss : 0;
+    const id = +new Date();
+
     setToasts([...toasts, {
-      id: +new Date(),
+      id,
       message: message,
       title: title || "",
       type: type || TYPES.default,
+      isAutoDismiss,
+      dismissPeriod,
     }]);
+
+    if (isAutoDismiss) {
+      const timeoutId = ((id) => {
+        return setTimeout(() => {
+          remove(id);
+        }, dismissPeriod);
+      })(id);
+      setTimeouts(prev => [...prev, timeoutId]);
+    }
   };
 
   /* remove items from the toasts list */
@@ -42,29 +69,29 @@ function ToastProvider(props) {
 
 
   /* helpers for different message types */
-  const success = message => add({
+  const success = (message, dismissOpt) => add({
     title: "Success!",
     message: message,
     type: TYPES.success,
-  });
+  }, dismissOpt);
 
-  const failure = message => add({
+  const failure = (message, dismissOpt) => add({
     title: "Oops ...",
     message: message,
     type: TYPES.failure,
-  });
+  }, dismissOpt);
 
-  const warning = message => add({
+  const warning = (message, dismissOpt) => add({
     title: "Warning!",
     message: message,
     type: TYPES.warning,
-  });
+  }, dismissOpt);
 
-  const info = message => add({
+  const info = (message, dismissOpt) => add({
     title: "Info!",
     message: message,
     type: TYPES.info,
-  });
+  }, dismissOpt);
 
   return (
     <ToasterContext.Provider
