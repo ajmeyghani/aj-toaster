@@ -27,25 +27,55 @@
   margin: 0;
 }
 
-.aj-toaster .--toast-success {
+/* TODO: add customizable themes; */
+.aj-toaster.--default-theme {}
+.aj-toaster.--simple-theme {}
+
+.aj-toaster.--default-theme .--toast-success,
+.aj-toaster.--default-theme .--toast-failure {
   display: flex;
+  box-sizing: border-box;
   min-width: 310px;
   max-width: 310px;
-  box-sizing: border-box;
-  color: #fff;
-  font-family: sans-serif;
-  background: #41d888;
   border-radius: 3px;
   margin: 5px 0;
-  transition: all 300ms ease-in-out;
-  opacity: 0;
+  font-family: sans-serif;
+  color: #fff;
 }
 
-.--toast-success.visible {
+.aj-toaster.--default-theme .--toast-success {
+  background: #41d888;
+}
+
+.aj-toaster.--default-theme .--toast-failure {
+  background: #f94416;
+}
+
+.aj-toaster.--default-theme .--toast-items {}
+
+/* animation definitions */
+.aj-toaster.--default-theme .--toast-item-enter-active,
+.aj-toaster.--default-theme .--toast-item-exit-active {
+  transition: all 300ms ease-in-out;
+  transition-property: opacity, transform;
+}
+.aj-toaster.--default-theme .--toast-item-enter {
+  opacity: 0;
+  transform: scale(1.1);
+}
+.aj-toaster.--default-theme .--toast-item-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.aj-toaster.--default-theme .--toast-item-exit {
   opacity: 1;
 }
+.aj-toaster.--default-theme .--toast-item-exit-active {
+  opacity: 0;
+  transform: scale(1.1);
+}
 
-.aj-toaster .toast-icon {
+.aj-toaster.--default-theme .toast-icon {
   flex: 0 0 23px;
   display: flex;
   align-items: center;
@@ -53,7 +83,7 @@
   font-size: 18px;
   margin-right: 14px;
 }
-.aj-toaster .toast-content {
+.aj-toaster.--default-theme .toast-content {
   flex: 1 0 0;
   display: flex;
   flex-direction: column;
@@ -61,24 +91,24 @@
   min-height: 37px;
   padding: 8px 0 8px 16px;
 }
-.aj-toaster .toast-dismiss {
+.aj-toaster.--default-theme .toast-dismiss {
   display: flex;
   flex-direction: column;
   justify-content: start;
   padding: 5px 5px 0 0;
 }
 
-.aj-toaster .toast-content__title {
+.aj-toaster.--default-theme .toast-content__title {
   font-weight: 400;
   font-size: 14px;
 }
 
-.aj-toaster .toast-content__body {
+.aj-toaster.--default-theme .toast-content__body {
   font-weight: 100;
   font-size: 12px;
 }
 
-.aj-toaster .toast-dismiss button {
+.aj-toaster.--default-theme .toast-dismiss button {
   background: none;
   border: none;
   color: #fff;
@@ -88,13 +118,4 @@
   line-height: 0;
   position: relative;
   top: 5px;
-}
-
-/* TODO: add customizable themes; */
-.aj-toaster.--default-theme {
-  color: #000;
-}
-
-.aj-toaster.--simple-theme {
-  color: #000;
 }

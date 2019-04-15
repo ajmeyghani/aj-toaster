@@ -1,18 +1,22 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
-import { CSSTransition } from 'react-transition-group';
+import {CSSTransition, TransitionGroup} from "react-transition-group";
 import "toaster/toaster.css";
 
 const ToasterContext = createContext();
+
+const TYPES = {
+  success: "success",
+  failure: "failure",
+  warning: "warning",
+  default: "success",
+}
 
 function ToastProvider(props) {
   const [toasts, setToasts] = useState([]);
   const theme = props.theme ? props.theme : "default-theme";
 
-  useEffect(() => {
-    console.log("new toasts", toasts);
-  }, [toasts])
-
-  const add = ({message, title}) => {
+  /* adds toasts to the list */
+  const add = ({message, title, type}) => {
     if (!message) {
       throw new Error(
         "Need to provide a string value for the message field.");
@@ -21,61 +25,46 @@ function ToastProvider(props) {
     setToasts([...toasts, {
       id: +new Date(),
       message: message,
-      title: title ? title : "",
-      isVisible: false,
+      title: title || "",
+      type: type || TYPES.default,
     }]);
   };
 
+  /* remove items from the toasts list */
   const remove = id => setToasts(
     prev => prev.filter(t => t.id !== id));
 
+  /* helper to add success messages */
   const success = message => add({
     title: "Success!",
-    message,
+    message: message,
+    type: TYPES.success,
   });
 
-  const setVisible = (id) => {
-    setToasts(prev => {
-      const copy = [...prev];
-      for (let t of copy) {
-        if (t.id === id) {
-          t.isVisible = true;
-        }
-      }
-      return copy;
-    });
-  };
-
-  const setInvisible = (id) => {
-    setTimeout(() => {
-      remove(id);
-    }, 200)
-
-    setToasts(prev => {
-      const copy = [...prev];
-      for (let t of copy) {
-        if (t.id === id) {
-          t.isVisible = false;
-        }
-      }
-      return copy;
-    });
-  };
+  /* helper to add success messages */
+  const failure = message => add({
+    title: "Oops ...",
+    message: message,
+    type: TYPES.failure,
+  });
 
   return (
-    <ToasterContext.Provider value={{add, success, toasts}}>
+    <ToasterContext.Provider value={{add, success, failure, toasts}}>
       <div className={`aj-toaster --${theme}`}>
-       <ul>
-         {toasts.map((toast) => (
-           <Toast
-            key={toast.id}
-            toast={toast}
-            remove={remove}
-            setInvisible={setInvisible}
-            setVisible={setVisible}>
-          </Toast>
-         ))}
-       </ul>
+        <ul>
+          <TransitionGroup className="--toast-items">
+            {toasts.map((toast) => (
+            <CSSTransition
+              key={toast.id} timeout={300} classNames="--toast-item">
+
+              <Toast
+              toast={toast}
+              remove={remove} />
+
+            </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </ul>
       </div>
       {props.children}
     </ToasterContext.Provider>
@@ -83,31 +72,20 @@ function ToastProvider(props) {
 }
 
 function Toast(props) {
-  const {id, title, message, isVisible} = props.toast;
-  const {remove, setVisible, setInvisible} = props;
-  const onInvis = id => () => setInvisible(id);
-
-  /* when toast loads, fade make it visible
-  * making it fade in.
-  */
-  useEffect(() => {
-    if (id && !isVisible) {
-      setTimeout(() => {
-        setVisible(id);
-      }, 50)
-    }
-  }, []);
+  const {id, title, message, type} = props.toast;
+  const {remove} = props;
+  const onRemove = id => () => remove(id);
 
   return (
-    <li className={`--toast-success ${isVisible ? "visible" : ""}`}>
+    <li className={`--toast-${type}`}>
       <div className="toast-content">
         {
          title ? <p className="toast-content__title">{title}</p> : null
         }
-        <p className="toast-content__body">{message} {isVisible ? "true" : "false"}</p>
+        <p className="toast-content__body">{message}</p>
       </div>
       <div className="toast-dismiss">
-        <button onClick={onInvis(id)}>&times;</button>
+        <button onClick={onRemove(id)}>&times;</button>
       </div>
     </li>
   );

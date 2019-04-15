@@ -17,6 +17,10 @@ function App() {
     });
   };
 
+  const addFailure = () => {
+    toaster.failure("Couldn't save the data to the database...");
+  }
+
   return (
     <div className="my-page">
       <h2 className="siimple-h2">Simple Toaster</h2>
@@ -24,6 +28,11 @@ function App() {
     <button
       onClick={handleAdd}
       className="siimple-btn siimple-btn--primary">Add a Toast
+    </button>
+    <button
+      onClick={addFailure}
+      className="siimple-btn siimple-btn--error">
+      Add Failure Toast
     </button>
   </div>);
 }
