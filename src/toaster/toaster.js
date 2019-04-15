@@ -7,6 +7,10 @@ function ToastProvider(props) {
   const [toasts, setToasts] = useState([]);
   const theme = props.theme ? props.theme : "default-theme";
 
+  useEffect(() => {
+    console.log("new toasts", toasts);
+  }, [toasts])
+
   const success = message => add({
     title: "Success!",
     message,
@@ -22,7 +26,23 @@ function ToastProvider(props) {
       id: +new Date(),
       message: message,
       title: title ? title : "",
+      isVis: true,
     }]);
+
+    let id;
+
+    id = setTimeout(() => {
+      setToasts(prev => {
+        const copy = [...prev];
+        let last = copy[copy.length - 1];
+        last.isVis = false;
+        // if (last) {
+        //   copy[copy.length - 1].isVis = false;
+        //   return copy;
+        // }
+        return copy;
+      })
+    }, 2000);
   };
 
   const remove = id => setToasts(
@@ -44,6 +64,8 @@ function ToastProvider(props) {
 
 function Toast(props) {
   const [isVisible, setIsVisible] = useState(false);
+  const {id, title, message, isVis} = props.toast;
+
   useEffect(() => {
     setTimeout(() => {
       setIsVisible(true);
@@ -51,7 +73,20 @@ function Toast(props) {
     return () => setIsVisible(false);
   }, []);
 
-  const {id, title, message} = props.toast;
+
+  useEffect(() => {
+    let timeoutID;
+    console.log(isVis, id);
+    if (!isVis) {
+      setIsVisible(false);
+      timeoutID = setTimeout(() => {
+        remove(id);
+      }, 200);
+      console.log(timeoutID)
+    }
+    return () => clearTimeout(timeoutID);
+  }, [isVis, id]);
+
   const {remove} = props;
   const onRemove = id => () => {
     setIsVisible(false);
@@ -66,7 +101,7 @@ function Toast(props) {
         {
          title ? <p className="toast-content__title">{title}</p> : null
         }
-        <p className="toast-content__body">{message}</p>
+        <p className="toast-content__body">{message} {isVis ? "true" : "false"}</p>
       </div>
       <div className="toast-dismiss">
         <button onClick={onRemove(id)}>&times;</button>

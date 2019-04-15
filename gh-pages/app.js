@@ -12,6 +12,7 @@ function App() {
 
   const handleAdd = () => {
     toaster.add({
+      title: "Nice!",
       message: "Post was saved!",
     });
   };
