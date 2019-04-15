@@ -7,33 +7,52 @@ function App() {
   const toaster = useToaster();
 
   useEffect(() => {
-    toaster.success("Your post was created successfully!");
+    toaster
+      .success("Welcome to React Toaster!");
   }, []);
 
-  const handleAdd = () => {
-    toaster.add({
-      title: "Nice!",
-      message: "Post was saved!",
-    });
+  const addSuccess = () => {
+    toaster.success("Your post was saved!");
   };
 
   const addFailure = () => {
     toaster.failure("Couldn't save the data to the database...");
   }
 
+  const addWarning = () => {
+    toaster.warning("Try again...");
+  }
+
+  const addInfo = () => {
+    toaster.info("Here is some extra information.");
+  }
+
   return (
     <div className="my-page">
       <h2 className="siimple-h2">Simple Toaster</h2>
       <p className="siimple-p">total: {toaster.toasts.length}</p>
-    <button
-      onClick={handleAdd}
-      className="siimple-btn siimple-btn--primary">Add a Toast
-    </button>
-    <button
-      onClick={addFailure}
-      className="siimple-btn siimple-btn--error">
-      Add Failure Toast
-    </button>
+      <div className="buttons">
+        <button
+          onClick={addSuccess}
+          className="siimple-btn siimple-btn--success">
+          Success
+        </button>
+        <button
+          onClick={addFailure}
+          className="siimple-btn siimple-btn--error">
+          Failure
+        </button>
+        <button
+          onClick={addWarning}
+          className="siimple-btn siimple-btn--warning">
+          Warning
+        </button>
+        <button
+          onClick={addInfo}
+          className="siimple-btn siimple-btn--primary">
+          Info
+        </button>
+      </div>
   </div>);
 }
 

@@ -8,12 +8,18 @@ const TYPES = {
   success: "success",
   failure: "failure",
   warning: "warning",
+  info: "info",
   default: "success",
-}
+};
+
+const THEMES = {
+  default: "default-theme",
+  simple: "simple-theme",
+};
 
 function ToastProvider(props) {
   const [toasts, setToasts] = useState([]);
-  const theme = props.theme ? props.theme : "default-theme";
+  const theme = props.theme || THEMES.default;
 
   /* adds toasts to the list */
   const add = ({message, title, type}) => {
@@ -34,25 +40,38 @@ function ToastProvider(props) {
   const remove = id => setToasts(
     prev => prev.filter(t => t.id !== id));
 
-  /* helper to add success messages */
+
+  /* helpers for different message types */
   const success = message => add({
     title: "Success!",
     message: message,
     type: TYPES.success,
   });
 
-  /* helper to add success messages */
   const failure = message => add({
     title: "Oops ...",
     message: message,
     type: TYPES.failure,
   });
 
+  const warning = message => add({
+    title: "Warning!",
+    message: message,
+    type: TYPES.warning,
+  });
+
+  const info = message => add({
+    title: "Info!",
+    message: message,
+    type: TYPES.info,
+  });
+
   return (
-    <ToasterContext.Provider value={{add, success, failure, toasts}}>
-      <div className={`aj-toaster --${theme}`}>
+    <ToasterContext.Provider
+      value={{add, success, failure, warning, info, toasts}}>
+      <div className="aj-toaster">
         <ul>
-          <TransitionGroup className="--toast-items">
+          <TransitionGroup className={`toaster__items --${theme}`}>
             {toasts.map((toast) => (
             <CSSTransition
               key={toast.id} timeout={300} classNames="--toast-item">
@@ -77,7 +96,7 @@ function Toast(props) {
   const onRemove = id => () => remove(id);
 
   return (
-    <li className={`--toast-${type}`}>
+    <li className={`--${type}`}>
       <div className="toast-content">
         {
          title ? <p className="toast-content__title">{title}</p> : null
