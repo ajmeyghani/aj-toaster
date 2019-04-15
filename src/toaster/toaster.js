@@ -1,4 +1,5 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
+import { CSSTransition } from 'react-transition-group';
 import "toaster/toaster.css";
 
 const ToasterContext = createContext();
@@ -86,6 +87,9 @@ function Toast(props) {
   const {remove, setVisible, setInvisible} = props;
   const onInvis = id => () => setInvisible(id);
 
+  /* when toast loads, fade make it visible
+  * making it fade in.
+  */
   useEffect(() => {
     if (id && !isVisible) {
       setTimeout(() => {
