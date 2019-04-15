@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "build": "rollup --config rollup.config.js",
-    "lint": "eslint -c eslint.config.js src rollup*.js --fix",
+    "lint": "eslint -c eslint.config.js src rollup*.js gh-pages --ignore-pattern gh-pages/dist --fix",
     "gh": "NODE_ENV=production rollup --config rollup.gh.js && cp gh-pages/index.html gh-pages/dist/ && gh-pages -d gh-pages/dist",
     "gh:watch": "rollup --config rollup.gh.js --watch",
     "push": "yarn build && npm publish",

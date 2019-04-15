@@ -1,7 +1,7 @@
 module.exports = {
   "extends": ["google", "plugin:react/recommended"],
   "plugins": [
-    "react-hooks"
+    // "react-hooks"
   ],
   "settings": {
     "react": {
@@ -16,8 +16,9 @@ module.exports = {
     "browser": true,
   },
   "rules": {
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    // "react-hooks/rules-of-hooks": "error",
+    // "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": "off",
     "quotes": ["warn", "double"],
     "indent": ["error", 2, {
       "SwitchCase": 1,

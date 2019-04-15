@@ -5,9 +5,13 @@
 - Using `npm`: `npm i aj-toaster -S`
 - Using `yarn`: `yarn add aj-toaster -S`
 
+## Browser Compatibility
+
+The latest and the greatest browsers.
+
 ## Usage
 
-Wrap your component with the `Toaster` provider and get a toast notification manager for free.
+Wrap your component with the `Toaster` provider and get a toast notification manager for free:
 
 **index.js**
 
@@ -27,13 +31,14 @@ ReactDom.render(
 
 ```js
 import React from "React";
-import {useToaster} from "aj-toaster"; // <-- use toaster
+import {useToaster} from "aj-toaster"; // <-- load hook
 function App() {
-  const toaster = useToaster();
+  const toaster = useToaster(); // <-- get toaster context.
   const handleAdd = () => {
-    toaster.success("Post was created!"); // <-- call add.
+    toaster.success("Post was created!"); // <-- call methods
   };
-  return (<div>
+  return (
+  <div>
     <button onClick={handleAdd}>Add</button>
   </div>);
 }
@@ -43,13 +48,29 @@ function App() {
 
 Todo: add more docs.
 
+## Options
+
+TODO: All this stuff will change with v1.0.0.
+
+- The provider takes an optional theme prop: `<Toaster theme="<theme-name>"> ...`. (todo ...)
+- The `toaster` context provides the following methods:
+
+    - `add`: takes an object with `{title: <string>, message: <string>}`.
+    - `success`: takes a string for the message and calls add for you.
+    - `warning` (todo)
+    - `error`   (todo)
+
+- The `toaster` context provides the following properties:
+
+    - `toasts`: contains all the toasts.
+
 ## Development
 
 - Install latest version of Node 10 `nvm install 10`.
 - Also install `yarn` and `http-server` globally with `npm i yarn http-server -g`.
 - Run `yarn install` to install all the dependencies.
 - Develop in the `src` folder and run `yarn build` to build to `umd/` and `./toaster.mjs`.
-- To check the gh-pages, first run `yarn gh:watch` and run `http-server . -p 8585 -c-1` and go to `http://localhost:8080/gh-pages/index.dev.html`to see the page. All the changes made will be rebuild and updated to `gh-pages/dist/index.js`
+- To check the gh-pages, first run `yarn gh:watch` and run `http-server . -p 8080 -c-1` and go to `http://localhost:8080/gh-pages/index.dev.html`to see the page. All the changes made will be rebuilt and updated to `gh-pages/dist/index.js`
 
 ## Tests
 
@@ -62,4 +83,4 @@ Todo: add more docs.
 
 **TODOS**
 
-- [] Make the first version.
+- [] Make version 1.0.0
