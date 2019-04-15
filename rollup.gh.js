@@ -15,6 +15,7 @@ const name = "aj_toaster";
 const globals = {
   "prop-types": "PropTypes",
   "react-dom": "ReactDOM",
+  "react-transition-group": "ReactTransitionGroup",
   "react": "React",
 };
 

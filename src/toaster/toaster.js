@@ -1,41 +1,116 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
+import {CSSTransition, TransitionGroup} from "react-transition-group";
 import "toaster/toaster.css";
 
 const ToasterContext = createContext();
 
+const TYPES = {
+  success: "success",
+  failure: "failure",
+  warning: "warning",
+  info: "info",
+  default: "success",
+};
+
+const THEMES = {
+  default: "default-theme",
+  simple: "simple-theme",
+};
+
+
 function ToastProvider(props) {
   const [toasts, setToasts] = useState([]);
-  const theme = props.theme ? props.theme : "default-theme";
+  const [timeOuts, setTimeouts] = useState([]);
+  const theme = props.theme || THEMES.default;
 
-  const success = message => add({
-    title: "Success!",
-    message,
-  });
+  /* TODO */
+  /* manage timeout functions */
+  useEffect(() => {
+    return () => {
+      if (timeOuts.length > 5) {
+        setTimeouts([]);
+      }
+    }
+  }, [timeOuts]);
 
-  const add = ({message, title}) => {
+  /* adds toasts to the list */
+  const add = ({message, title, type}, dismissOpt) => {
     if (!message) {
       throw new Error(
         "Need to provide a string value for the message field.");
     }
 
+    const isAutoDismiss = dismissOpt ? Boolean(dismissOpt.dismiss) : false;
+    const dismissPeriod = isAutoDismiss ? dismissOpt.dismiss : 0;
+    const id = +new Date();
+
     setToasts([...toasts, {
-      id: +new Date(),
+      id,
       message: message,
-      title: title ? title : "",
+      title: title || "",
+      type: type || TYPES.default,
+      isAutoDismiss,
+      dismissPeriod,
     }]);
+
+    if (isAutoDismiss) {
+      const timeoutId = ((id) => {
+        return setTimeout(() => {
+          remove(id);
+        }, dismissPeriod);
+      })(id);
+      setTimeouts(prev => [...prev, timeoutId]);
+    }
   };
 
+  /* remove items from the toasts list */
   const remove = id => setToasts(
     prev => prev.filter(t => t.id !== id));
 
+
+  /* helpers for different message types */
+  const success = (message, dismissOpt) => add({
+    title: "Success!",
+    message: message,
+    type: TYPES.success,
+  }, dismissOpt);
+
+  const failure = (message, dismissOpt) => add({
+    title: "Oops ...",
+    message: message,
+    type: TYPES.failure,
+  }, dismissOpt);
+
+  const warning = (message, dismissOpt) => add({
+    title: "Warning!",
+    message: message,
+    type: TYPES.warning,
+  }, dismissOpt);
+
+  const info = (message, dismissOpt) => add({
+    title: "Info!",
+    message: message,
+    type: TYPES.info,
+  }, dismissOpt);
+
   return (
-    <ToasterContext.Provider value={{add, remove, toasts, success}}>
-      <div className={`aj-toaster --${theme}`}>
-       <ul>
-         {toasts.map((toast) => (
-           <Toast key={toast.id} toast={toast} remove={remove}></Toast>
-         ))}
-       </ul>
+    <ToasterContext.Provider
+      value={{add, success, failure, warning, info, toasts}}>
+      <div className="aj-toaster">
+        <ul>
+          <TransitionGroup className={`toaster__items --${theme}`}>
+            {toasts.map((toast) => (
+            <CSSTransition
+              key={toast.id} timeout={300} classNames="--toast-item">
+
+              <Toast
+              toast={toast}
+              remove={remove} />
+
+            </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </ul>
       </div>
       {props.children}
     </ToasterContext.Provider>
@@ -43,25 +118,12 @@ function ToastProvider(props) {
 }
 
 function Toast(props) {
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 20)
-    return () => setIsVisible(false);
-  }, []);
-
-  const {id, title, message} = props.toast;
+  const {id, title, message, type} = props.toast;
   const {remove} = props;
-  const onRemove = id => () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      remove(id);
-    }, 200);
-  };
+  const onRemove = id => () => remove(id);
 
   return (
-    <li className={`--toast-success ${isVisible ? "visible" : ""}`}>
+    <li className={`--${type}`}>
       <div className="toast-content">
         {
          title ? <p className="toast-content__title">{title}</p> : null

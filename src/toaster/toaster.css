@@ -1,3 +1,4 @@
+/* wrapper styles */
 .aj-toaster {
   position: fixed;
   top: 0;
@@ -7,6 +8,7 @@
   justify-content: center;
 }
 
+/* overrides */
 .aj-toaster ul,
 .aj-toaster ul li {
   margin-block-start: 0;
@@ -27,33 +29,49 @@
   margin: 0;
 }
 
-.aj-toaster .--toast-success {
+/* TODO: add customizable themes; */
+.toaster__items.--default-theme {}
+.toaster__items.--simple-theme {}
+
+/* common styles. */
+.--default-theme .--success,
+.--default-theme .--warning,
+.--default-theme .--info,
+.--default-theme .--failure {
   display: flex;
+  box-sizing: border-box;
   min-width: 310px;
   max-width: 310px;
-  box-sizing: border-box;
-  color: #fff;
-  font-family: sans-serif;
-  background: #41d888;
   border-radius: 3px;
   margin: 5px 0;
-  transition: all 300ms ease-in-out;
-  opacity: 0;
+  font-family: sans-serif;
+  color: #fff;
 }
 
-.--toast-success.visible {
-  opacity: 1;
+/* types */
+.--default-theme .--success {
+  background: #41d888;
+}
+.--default-theme .--warning {
+  background: #ffbd02;
+}
+.--default-theme .--info {
+  background: #0387d7;
+}
+.--default-theme .--failure {
+  background: #f94416;
 }
 
-.aj-toaster .toast-icon {
-  flex: 0 0 23px;
+/* toast layout and structure styles */
+.--default-theme .toast-icon {
+  flex: 0 0 25px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   margin-right: 14px;
 }
-.aj-toaster .toast-content {
+.--default-theme .toast-content {
   flex: 1 0 0;
   display: flex;
   flex-direction: column;
@@ -61,24 +79,24 @@
   min-height: 37px;
   padding: 8px 0 8px 16px;
 }
-.aj-toaster .toast-dismiss {
+.--default-theme .toast-dismiss {
   display: flex;
   flex-direction: column;
   justify-content: start;
   padding: 5px 5px 0 0;
 }
 
-.aj-toaster .toast-content__title {
+.--default-theme .toast-content__title {
   font-weight: 400;
   font-size: 14px;
 }
 
-.aj-toaster .toast-content__body {
+.--default-theme .toast-content__body {
   font-weight: 100;
   font-size: 12px;
 }
 
-.aj-toaster .toast-dismiss button {
+.--default-theme .toast-dismiss button {
   background: none;
   border: none;
   color: #fff;
@@ -90,11 +108,24 @@
   top: 5px;
 }
 
-/* todo */
-.aj-toaster.--default-theme {
-  color: #000;
+/* animation definitions */
+.--default-theme .--toast-item-enter-active,
+.--default-theme .--toast-item-exit-active {
+  transition: all 300ms ease-in-out;
+  transition-property: opacity, transform;
 }
-
-.aj-toaster.--simple-theme {
-  color: #000;
+.--default-theme .--toast-item-enter {
+  opacity: 0;
+  transform: scale(1.1);
+}
+.--default-theme .--toast-item-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.--default-theme .--toast-item-exit {
+  opacity: 1;
+}
+.--default-theme .--toast-item-exit-active {
+  opacity: 0;
+  transform: scale(1.1);
 }

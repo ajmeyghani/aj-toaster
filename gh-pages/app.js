@@ -7,23 +7,68 @@ function App() {
   const toaster = useToaster();
 
   useEffect(() => {
-    toaster.success("Your post was created successfully!");
+    toaster.success("Welcome to React Toaster!", {dismiss: 2e3});
   }, []);
 
-  const handleAdd = () => {
+  const addServerError = () => {
     toaster.add({
-      message: "Post was saved!",
-    });
+      title: "An error occurred...",
+      message: "Couldn't get the data from the server.",
+      type: "failure",
+    },
+    {
+      dismiss: 0
+    })
+  };
+
+  const addSuccess = () => {
+    toaster.success("Your post was saved!", {dismiss: 1500});
+  };
+
+  const addFailure = () => {
+    toaster.failure("Couldn't save the data to the database...");
+  };
+
+  const addWarning = () => {
+    toaster.warning("Try again...", {dismiss: 5000});
+  };
+
+  const addInfo = () => {
+    toaster.info("Here is some extra information.");
   };
 
   return (
     <div className="my-page">
       <h2 className="siimple-h2">Simple Toaster</h2>
       <p className="siimple-p">total: {toaster.toasts.length}</p>
-    <button
-      onClick={handleAdd}
-      className="siimple-btn siimple-btn--primary">Add a Toast
-    </button>
+      <div className="buttons">
+        <button
+          onClick={addServerError}
+          className="siimple-btn siimple-btn--navy">
+          Server Error
+        </button>
+
+        <button
+          onClick={addSuccess}
+          className="siimple-btn siimple-btn--success">
+          Success
+        </button>
+        <button
+          onClick={addFailure}
+          className="siimple-btn siimple-btn--error">
+          Failure
+        </button>
+        <button
+          onClick={addWarning}
+          className="siimple-btn siimple-btn--warning">
+          Warning
+        </button>
+        <button
+          onClick={addInfo}
+          className="siimple-btn siimple-btn--primary">
+          Info
+        </button>
+      </div>
   </div>);
 }
 
