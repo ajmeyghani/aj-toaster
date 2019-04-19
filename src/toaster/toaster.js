@@ -17,7 +17,6 @@ const THEMES = {
   simple: "simple-theme",
 };
 
-
 function ToastProvider(props) {
   const [toasts, setToasts] = useState([]);
   const [timeOuts, setTimeouts] = useState([]);
@@ -30,7 +29,7 @@ function ToastProvider(props) {
       if (timeOuts.length > 5) {
         setTimeouts([]);
       }
-    }
+    };
   }, [timeOuts]);
 
   /* adds toasts to the list */
@@ -44,14 +43,16 @@ function ToastProvider(props) {
     const dismissPeriod = isAutoDismiss ? dismissOpt.dismiss : 0;
     const id = +new Date();
 
-    setToasts([...toasts, {
+    const newToast = {
       id,
       message: message,
       title: title || "",
       type: type || TYPES.default,
       isAutoDismiss,
       dismissPeriod,
-    }]);
+    };
+
+    setToasts([newToast]);
 
     if (isAutoDismiss) {
       const timeoutId = ((id) => {

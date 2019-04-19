@@ -17,8 +17,8 @@ function App() {
       type: "failure",
     },
     {
-      dismiss: 0
-    })
+      dismiss: 0,
+    });
   };
 
   const addSuccess = () => {
@@ -30,7 +30,7 @@ function App() {
   };
 
   const addWarning = () => {
-    toaster.warning("Try again...", {dismiss: 5000});
+    toaster.warning("Try again...");
   };
 
   const addInfo = () => {
