@@ -81,14 +81,15 @@
       const isAutoDismiss = dismissOpt ? Boolean(dismissOpt.dismiss) : false;
       const dismissPeriod = isAutoDismiss ? dismissOpt.dismiss : 0;
       const id = +new Date();
-      setToasts([...toasts, {
+      const newToast = {
         id,
         message: message,
         title: title || "",
         type: type || TYPES.default,
         isAutoDismiss,
         dismissPeriod
-      }]);
+      };
+      setToasts([newToast]);
 
       if (isAutoDismiss) {
         const timeoutId = (id => {
@@ -219,9 +220,7 @@
     };
 
     const addWarning = () => {
-      toaster.warning("Try again...", {
-        dismiss: 5000
-      });
+      toaster.warning("Try again...");
     };
 
     const addInfo = () => {
@@ -232,7 +231,7 @@
       className: "my-page"
     }, React__default.createElement("h2", {
       className: "siimple-h2"
-    }, "Toaster 0.3.1"), React__default.createElement("p", {
+    }, "Toaster 0.4.0"), React__default.createElement("p", {
       className: "siimple-p"
     }, "total: ", toaster.toasts.length), React__default.createElement("div", {
       className: "buttons"
