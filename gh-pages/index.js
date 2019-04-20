@@ -4,6 +4,6 @@ import Toaster from "toaster/toaster";
 import App from "./app";
 
 ReactDOM.render(
-<Toaster>
+<Toaster theme="theme2">
   <App />
 </Toaster>, document.querySelector("#app"));

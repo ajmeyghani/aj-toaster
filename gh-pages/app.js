@@ -22,7 +22,7 @@ function App() {
   };
 
   const addSuccess = () => {
-    toaster.success("Your post was saved!", {dismiss: 1500});
+    toaster.success("Your post was saved!");
   };
 
   const addFailure = () => {
@@ -37,8 +37,11 @@ function App() {
     toaster.info("Here is some extra information." +
     "Here is some extra information." +
     "Here is some extra information." +
+    "Here is some extra information. 55" +
     "Here is some extra information." +
-    "Here is some extra information."
+    "Here is some extra information." +
+    "Here is some extra information. 66" +
+    "Here is some extra information END."
     );
   };
 

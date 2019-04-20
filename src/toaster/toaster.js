@@ -9,18 +9,12 @@ const TYPES = {
   failure: "failure",
   warning: "warning",
   info: "info",
-  default: "success",
-};
-
-const THEMES = {
-  default: "default-theme",
-  simple: "simple-theme",
 };
 
 function ToastProvider(props) {
   const [toasts, setToasts] = useState([]);
   const [timeOuts, setTimeouts] = useState([]);
-  const theme = props.theme || THEMES.default;
+  const theme = props.theme || "theme1";
 
   /* TODO */
   /* manage timeout functions */
@@ -34,9 +28,9 @@ function ToastProvider(props) {
 
   /* adds toasts to the list */
   const add = ({message, title, type}, dismissOpt) => {
-    if (!message) {
+    if (!message || !type) {
       throw new Error(
-        "Need to provide a string value for the message field.");
+        "Need to provide a message and a type.");
     }
 
     const isAutoDismiss = dismissOpt ? Boolean(dismissOpt.dismiss) : false;
@@ -47,7 +41,7 @@ function ToastProvider(props) {
       id,
       message: message,
       title: title || "",
-      type: type || TYPES.default,
+      type: type,
       isAutoDismiss,
       dismissPeriod,
     };
@@ -97,9 +91,8 @@ function ToastProvider(props) {
   return (
     <ToasterContext.Provider
       value={{add, success, failure, warning, info, toasts}}>
-      <div className="aj-toaster">
-        <ul>
-          <TransitionGroup className={`toaster__items --${theme}`}>
+      <div className={`aj-toaster --${theme}`}>
+          <TransitionGroup className="aj-toaster__items">
             {toasts.map((toast) => (
             <CSSTransition
               key={toast.id} timeout={300} classNames="--toast-item">
@@ -111,7 +104,6 @@ function ToastProvider(props) {
             </CSSTransition>
             ))}
           </TransitionGroup>
-        </ul>
       </div>
       {props.children}
     </ToasterContext.Provider>
@@ -124,19 +116,19 @@ function Toast(props) {
   const onRemove = id => () => remove(id);
 
   return (
-    <li className={`--${type}`}>
-      <div className="toast-content">
+    <div className={`--${type}`}>
+      <div className="aj-toaster__content">
         {
-         title ? <p className="toast-content__title">{title}</p> : null
+         title ? <p className="aj-toaster__title">{title}</p> : null
         }
-        <p className="toast-content__body">{message}</p>
+        <p className="aj-toaster__message">{message}</p>
       </div>
-      <div className="toast-dismiss">
+      <div className="aj-toaster__dismiss">
         <button onClick={onRemove(id)}>
         &times;
         </button>
       </div>
-    </li>
+    </div>
   );
 }
 

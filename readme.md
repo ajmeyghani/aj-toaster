@@ -54,25 +54,63 @@ function App() {
 }
 ```
 
-## Styles
+## Themes
 
-Todo: add more docs.
+There is limited support for custom color schemes. To define a new color theme,
+create a theme in your own css and define the custom properties controlling the
+colors. In the example below we are defining `theme3`:
+
+```
+.aj-toaster.--theme3 {
+  --aj-toaster__success: green;
+  --aj-toaster__failure: red;
+  --aj-toaster__info: blue;
+  --aj-toaster__warning: orange;
+
+  --aj-toaster__success-text: white;
+  --aj-toaster__warning-text: white;
+  --aj-toaster__info-text: white;
+  --aj-toaster__failure-text: white;
+
+  --aj-toaster__width: 300px;
+}
+```
+
+After defining the theme, just pass in the name of the class name, without the
+double dashes, when using the provider:
+
+```
+<Toaster theme="theme3">
+</Toater>
+```
 
 ## Options
 
-TODO: All this stuff will change with v1.0.0.
+All this stuff may change with v1.0.0.
 
-- The provider takes an optional theme prop: `<Toaster theme="<theme-name>"> ...`. (todo ...)
+- The provider takes an optional theme prop: `<Toaster theme="mytheme"></Toaster>`.
 - The `toaster` context provides the following methods:
 
-    - `add`: takes an object with `{title: <string>, message: <string>}`.
-    - `success`: takes a string for the message and calls add for you.
-    - `warning` (todo)
-    - `error`   (todo)
+- `add`: takes two objects, the first describes the toast and the second optional argument defines how to dismiss it.
+If the second object is not given, the toast won't auto dismiss. The following snippet describes each arguments in
+more detail:
 
-- The `toaster` context provides the following properties:
+```
+toaster.add(
+  {
+    title: <string>, (optional)
+    message: <string>, (required)
+    type: <string>, required, one of "failure"|"success"|"info"|"warning",
+  },
+  {
+    dismiss: <number> duration in milliseconds to auto dismiss.
+  }
+)
+```
 
-    - `toasts`: contains all the toasts.
+- `success`, `warning`, `info`, `failure`: all take a string for the message and
+call `add` for you with some default titles. Just like `add`, you can specify an optional `dismiss` config
+to auto dismiss a toast.
 
 ## Development
 
@@ -93,4 +131,4 @@ TODO: All this stuff will change with v1.0.0.
 
 **TODOS**
 
-- [] Make version 1.0.0
+- [] Make version 1.0.0 and improve animations.

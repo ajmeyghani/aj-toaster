@@ -17,3 +17,17 @@
   flex: 1 0 0;
   margin-right: 10px;
 }
+
+.aj-toaster.--theme3 {
+  --aj-toaster__success: green;
+  --aj-toaster__failure: red;
+  --aj-toaster__info: blue;
+  --aj-toaster__warning: orange;
+
+  --aj-toaster__success-text: white;
+  --aj-toaster__warning-text: white;
+  --aj-toaster__info-text: white;
+  --aj-toaster__failure-text: white;
+
+  --aj-toaster__width: 300px;
+}
