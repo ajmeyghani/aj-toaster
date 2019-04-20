@@ -1,6 +1,7 @@
 /* wrapper styles */
 .aj-toaster {
   position: fixed;
+  z-index: 5;
   top: 0;
   right: 0;
   width: 320px;
@@ -79,12 +80,7 @@
   min-height: 37px;
   padding: 8px 0 8px 16px;
 }
-.--default-theme .toast-dismiss {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  padding: 5px 5px 0 0;
-}
+
 
 .--default-theme .toast-content__title {
   font-weight: 400;
@@ -96,16 +92,44 @@
   font-size: 12px;
 }
 
-.--default-theme .toast-dismiss button {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1rem;
+.--default-theme .toast-dismiss {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.--default-theme .toast-dismiss button {
+  border: none;
+  color: rgba(255, 255, 255, 0.81);
+  font-size: 20px;
   margin: 0;
   line-height: 0;
-  position: relative;
-  top: 5px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  border-left: 0;
+  margin-left: 5px;
+  background-color: rgba(160, 160, 160, 0.1411764705882353);
+  flex: 1;
+}
+
+.--default-theme .toast-dismiss button:hover {
+  cursor: pointer;
+  background: rgba(232, 232, 232, 0.2);
+}
+
+.--default-theme .toast-dismiss button:active {
+  background-color: rgba(160, 160, 160, 0.1411764705882353);
+}
+
+.--default-theme .toast-dismiss button,
+.--default-theme .toast-dismiss button:hover {
+  transition: background-color 200ms ease-in-out;
+}
+
+.--default-theme .toast-dismiss button:focus {
+  outline: 0;
 }
 
 /* animation definitions */

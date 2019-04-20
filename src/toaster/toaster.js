@@ -132,7 +132,9 @@ function Toast(props) {
         <p className="toast-content__body">{message}</p>
       </div>
       <div className="toast-dismiss">
-        <button onClick={onRemove(id)}>&times;</button>
+        <button onClick={onRemove(id)}>
+        &times;
+        </button>
       </div>
     </li>
   );

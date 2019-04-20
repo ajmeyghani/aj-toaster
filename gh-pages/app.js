@@ -34,7 +34,12 @@ function App() {
   };
 
   const addInfo = () => {
-    toaster.info("Here is some extra information.");
+    toaster.info("Here is some extra information." +
+    "Here is some extra information." +
+    "Here is some extra information." +
+    "Here is some extra information." +
+    "Here is some extra information."
+    );
   };
 
   return (
