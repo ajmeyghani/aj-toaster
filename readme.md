@@ -76,7 +76,7 @@ TODO: All this stuff will change with v1.0.0.
 
 ## Development
 
-- Install latest version of Node 10 `nvm install 10`.
+- Install the latest version of Node 10 `nvm install 10`.
 - Also install `yarn` and `http-server` globally with `npm i yarn http-server -g`.
 - Run `yarn install` to install all the dependencies.
 - Develop in the `src` folder and run `yarn build` to build to `umd/` and `./toaster.mjs`.
