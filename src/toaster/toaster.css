@@ -135,9 +135,9 @@
 /* animation definitions */
 .--default-theme .--toast-item-enter-active,
 .--default-theme .--toast-item-exit-active {
-  transition: opacity 250ms ease-in-out 0s,
-              transform 250ms ease-in-out 50ms,
-              max-height 500ms ease-in-out 0s;
+  transition: opacity 300ms ease-in-out 0s,
+              transform 300ms ease-in-out 50ms,
+              max-height 600ms ease-in-out 0s;
 }
 .--default-theme .--toast-item-enter {
   opacity: 0;
