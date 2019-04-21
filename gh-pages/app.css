@@ -10,15 +10,15 @@
   display: flex;
   width: 90%;
   justify-content: space-between;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 .buttons button {
-  flex: 1 0 0;
-  margin-right: 10px;
+  flex: 0.5;
+  margin-right: 20px;
 }
 
-.aj-toaster.--theme3 {
+.aj-toaster-wrapper.--mytheme {
   --aj-toaster__success: green;
   --aj-toaster__failure: red;
   --aj-toaster__info: blue;
@@ -28,6 +28,15 @@
   --aj-toaster__warning-text: white;
   --aj-toaster__info-text: white;
   --aj-toaster__failure-text: white;
+  --aj-toaster__animation-duration: 500ms;
+  --aj-toaster__animation-easing: cubic-bezier(1,-0.01, 0.58, 1);
 
-  --aj-toaster__width: 300px;
+  --aj-toaster__width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.aj-toaster-wrapper.--mytheme .aj-toaster {
+  border-radius: 0
 }
