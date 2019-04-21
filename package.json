@@ -1,6 +1,6 @@
 {
   "name": "aj-toaster",
-  "version": "0.4.3",
+  "version": "1.0.0",
   "description": "Notification toast provider for React.",
   "author": "AJ Meyghani",
   "license": "MIT",
