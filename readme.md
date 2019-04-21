@@ -57,10 +57,10 @@ function App() {
 
 There is limited support for custom color schemes. To define a new color theme,
 create a theme in your own css and define the custom properties controlling the
-colors. In the example below we are defining `theme3`:
+colors. In the example below we are defining `mytheme`:
 
 ```
-.aj-toaster.--theme3 {
+.aj-toaster-wrapper.--mytheme {
   --aj-toaster__success: green;
   --aj-toaster__failure: red;
   --aj-toaster__info: blue;
@@ -70,16 +70,26 @@ colors. In the example below we are defining `theme3`:
   --aj-toaster__warning-text: white;
   --aj-toaster__info-text: white;
   --aj-toaster__failure-text: white;
+  --aj-toaster__animation-duration: 500ms;
+  --aj-toaster__animation-easing: cubic-bezier(1,-0.01, 0.58, 1);
 
-  --aj-toaster__width: 300px;
+  --aj-toaster__width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
 }
+
+.aj-toaster-wrapper.--mytheme .aj-toaster {
+  border-radius: 0
+}
+
 ```
 
 After defining the theme, just pass in the name of the class name, without the
 double dashes, when using the provider:
 
 ```
-<Toaster theme="theme3">
+<Toaster theme="mytheme">
 </Toater>
 ```
 

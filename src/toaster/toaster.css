@@ -9,7 +9,8 @@
   --aj-toaster__info-text: #fff;
   --aj-toaster__failure-text: #fff;
   --aj-toaster__width: 310px;
-  --aj-toaster__animation-duration: 350ms;
+  --aj-toaster__animation-duration: 300ms;
+  --aj-toaster__animation-easing: ease-in-out;
 
   /* default theme styles */
   width: var(--aj-toaster__width);
@@ -21,23 +22,7 @@
   right: 5px;
 }
 
-.aj-toaster-wrapper.--theme2 {
-  --aj-toaster__success: #ccf8e4;
-  --aj-toaster__failure: #ffe2df;
-  --aj-toaster__info: #c8ecff;
-  --aj-toaster__warning: #fff3a5;
-  --aj-toaster__success-text: #5fd296;
-  --aj-toaster__warning-text: #f7a255;
-  --aj-toaster__info-text: #2cbff2;
-  --aj-toaster__failure-text: #f56565;
-  --aj-toaster__width: 400px;
-  width: var(--aj-toaster__width);
-}
-
-.aj-toaster--success,
-.aj-toaster--warning,
-.aj-toaster--info,
-.aj-toaster--failure {
+.aj-toaster {
   min-width: var(--aj-toaster__width);
   max-width: var(--aj-toaster__width);
   display: flex;
@@ -132,16 +117,16 @@
 /* animations */
 .aj-toaster {
   opacity: 0;
-  transform: scale(1) translateY(-50px);
+  transform: scale(1.1);
 }
 .aj-toaster.--active {
   opacity: 1;
-  transform: scale(1) translateY(0);
-  transition: opacity var(--aj-toaster__animation-duration) ease-in-out 50ms,
-              transform var(--aj-toaster__animation-duration) ease-in-out 0ms;
+  transform: scale(1);
+  transition: transform var(--aj-toaster__animation-duration) var(--aj-toaster__animation-easing) 0ms,
+              opacity var(--aj-toaster__animation-duration) var(--aj-toaster__animation-easing) 50ms;
 }
 .aj-toaster.--inactive {
   opacity: 0;
-  transition: all var(--aj-toaster__animation-duration) ease-in-out;
+  transition: all var(--aj-toaster__animation-duration) var(--aj-toaster__animation-easing);
   transition-property: opacity, transform;
 }

@@ -18,7 +18,7 @@
   margin-right: 10px;
 }
 
-.aj-toaster-wrapper.--theme3 {
+.aj-toaster-wrapper.--mytheme {
   --aj-toaster__success: green;
   --aj-toaster__failure: red;
   --aj-toaster__info: blue;
@@ -29,6 +29,7 @@
   --aj-toaster__info-text: white;
   --aj-toaster__failure-text: white;
   --aj-toaster__animation-duration: 500ms;
+  --aj-toaster__animation-easing: cubic-bezier(1,-0.01, 0.58, 1);
 
   --aj-toaster__width: 100%;
   top: 0;
@@ -36,6 +37,6 @@
   right: 0;
 }
 
-.aj-toaster-wrapper.--theme3 .aj-toaster {
+.aj-toaster-wrapper.--mytheme .aj-toaster {
   border-radius: 0
 }
