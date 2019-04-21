@@ -1,5 +1,5 @@
 .aj-toaster-wrapper {
-  /* default theme properties. */
+  /* default properties. */
   --aj-toaster__success: #41d888;
   --aj-toaster__warning: #ffbd02;
   --aj-toaster__info: #0387d7;
@@ -12,7 +12,7 @@
   --aj-toaster__animation-duration: 300ms;
   --aj-toaster__animation-easing: ease-in-out;
 
-  /* default theme styles */
+  /* default styles */
   width: var(--aj-toaster__width);
   display: flex;
   justify-content: center;
@@ -20,6 +20,10 @@
   z-index: 5;
   top: 5px;
   right: 5px;
+}
+
+.aj-toaster-wrapper.--default-theme {
+  --aj-toaster__width: 320px;
 }
 
 .aj-toaster {

@@ -129,10 +129,6 @@ to auto dismiss a toast.
 - Develop in the `src` folder and run `yarn build` to build to `umd/` and `./toaster.mjs`.
 - To check the gh-pages, first run `yarn gh:watch` and run `http-server . -p 8080 -c-1` and go to `http://localhost:8080/gh-pages/index.dev.html`to see the page. All the changes made will be rebuilt and updated to `gh-pages/dist/index.js`
 
-## Tests
-
-- functional tests coming soon...
-
 ## Maintainer
 
 - As the maintainer you can then run `yarn gh` to publish the new version to Github.

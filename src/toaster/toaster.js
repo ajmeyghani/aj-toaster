@@ -12,7 +12,7 @@ const TYPES = {
 };
 
 const DEFAULT_ANIMATION_DURATION = 300; /* ms */
-const DEFAULT_THEME = "theme1";
+const DEFAULT_THEME = "default-theme";
 
 function ToastProvider(props) {
   const [activeToast, setActiveToast] = useState(null);
@@ -24,11 +24,13 @@ function ToastProvider(props) {
 
   /* remove active toast */
   const remove = id => setActiveToast(null);
-  const inactive = id => setActiveToast(prev => ({
+
+  /* deactivate the active toast, before it's removed. */
+  const deactivate = id => setActiveToast(prev => ({
     ...prev, _isActive: false,
   }));
 
-  /* get animation duration from the css property. */
+  /* get animation duration from the css property */
   useEffect(() => {
     if (toasterRef.current) {
       const durationValue = animationDurationFromCssProp(
@@ -39,6 +41,7 @@ function ToastProvider(props) {
     }
   }, [activeToast]);
 
+  /* helper for clearing all the auto dismiss callbacks */
   const resetAutoDismissQ = () => {
     if (autoDismissQ.length) {
       for (const fnId of autoDismissQ) {
@@ -46,13 +49,17 @@ function ToastProvider(props) {
       }
       setAutoDismissQ([]);
     }
-  }
+  };
 
   /* set active toast. */
-  const add = ({message, title, type}, dismissOpt) => {
+  const set = ({message, title, type}, dismissOpt) => {
     if (!message || !type) {
       throw new Error(
         "Need to provide a message and a type.");
+    }
+
+    if (!(type in TYPES)) {
+      throw new Error("Not a valid type.");
     }
 
     if (isInTransition) {
@@ -85,7 +92,7 @@ function ToastProvider(props) {
     }, animDuration * 2);
 
     if (activeToast) {
-      inactive();
+      deactivate();
       setTimeout(() => {
         setActiveToast(newToast);
       }, animDuration);
@@ -95,7 +102,7 @@ function ToastProvider(props) {
 
     if (isAutoDismiss) {
       const a = setTimeout(() => {
-        inactive();
+        deactivate();
       }, dismissAfterWhile);
 
       const b = setTimeout(() => {
@@ -106,49 +113,46 @@ function ToastProvider(props) {
     }
   };
 
-  const removeWithDelay = () => {
+  const add = set; /* alias for set */
+
+  const removeWithAnimation = () => {
     resetAutoDismissQ();
-    inactive();
+    deactivate();
     setTimeout(() => {
       remove();
     }, animDuration);
   };
 
-  /* helpers for different message types */
-  const success = (message, dismissOpt) => add({
-    title: "Success!",
-    message: message,
-    type: TYPES.success,
-  }, dismissOpt);
+  /* Helper for creating toasts with some defaults. */
+  const toast = (type) => (message, dismissOpt, title) => {
+    const titles = {
+      [TYPES.success]: "Success!",
+      [TYPES.warning]: "Warning!",
+      [TYPES.failure]: "Oops ...",
+      [TYPES.info]: "Note!",
+    };
+    return set({
+      title: title || titles[type],
+      message: message,
+      type: TYPES[type],
+    }, dismissOpt);
+  };
 
-  const failure = (message, dismissOpt) => add({
-    title: "Oops ...",
-    message: message,
-    type: TYPES.failure,
-  }, dismissOpt);
-
-  const warning = (message, dismissOpt) => add({
-    title: "Warning!",
-    message: message,
-    type: TYPES.warning,
-  }, dismissOpt);
-
-  const info = (message, dismissOpt) => add({
-    title: "Info!",
-    message: message,
-    type: TYPES.info,
-  }, dismissOpt);
+  const success = (...args) => toast(TYPES.success)(...args);
+  const warning = (...args) => toast(TYPES.warning)(...args);
+  const failure = (...args) => toast(TYPES.failure)(...args);
+  const info = (...args) => toast(TYPES.info)(...args);
 
   return (
     <ToasterContext.Provider
-      value={{add, success, failure, warning, info, activeToast}}>
+      value={{set, add, success, failure, warning, info}}>
       {
         !activeToast ? null :
         <div ref={toasterRef}
         className={`aj-toaster-wrapper --${theme}`}>
           <Toast
           toast={activeToast}
-          remove={removeWithDelay} />
+          remove={removeWithAnimation} />
         </div>
       }
       {props.children}
@@ -164,7 +168,6 @@ function Toast(props) {
   const {remove, toast} = props;
   const {title, message, type} = toast;
   const [isActive, setIsActive] = useState(false);
-
   const onRemove = () => () => remove();
 
   /* handles adding or removing active class for

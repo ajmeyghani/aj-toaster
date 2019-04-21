@@ -10,12 +10,12 @@
   display: flex;
   width: 90%;
   justify-content: space-between;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 .buttons button {
-  flex: 1 0 0;
-  margin-right: 10px;
+  flex: 0.5;
+  margin-right: 20px;
 }
 
 .aj-toaster-wrapper.--mytheme {
