@@ -28,6 +28,7 @@
   --aj-toaster__warning-text: white;
   --aj-toaster__info-text: white;
   --aj-toaster__failure-text: white;
+  --aj-toaster__animation-duration: 500ms;
 
   --aj-toaster__width: 100%;
   top: 0;

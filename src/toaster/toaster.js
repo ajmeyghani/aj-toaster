@@ -14,8 +14,6 @@ const TYPES = {
 const DEFAULT_ANIMATION_DURATION = 300; /* ms */
 const DEFAULT_THEME = "theme1";
 
-
-
 function ToastProvider(props) {
   const [activeToast, setActiveToast] = useState(null);
   const [autoDismissQ, setAutoDismissQ] = useState([]);
@@ -33,12 +31,21 @@ function ToastProvider(props) {
   useEffect(() => {
     if (toasterRef.current) {
       const durationValue = animationDurationFromCssProp(
-        toasterRef.current, "--animation-duration");
+        toasterRef.current, "--aj-toaster__animation-duration");
 
       setAnimDuration(
         durationValue || DEFAULT_ANIMATION_DURATION);
     }
   }, [activeToast]);
+
+  const resetAutoDismissQ = () => {
+    if (autoDismissQ.length) {
+      for (const fnId of autoDismissQ) {
+        window.clearTimeout(fnId);
+      }
+      setAutoDismissQ([]);
+    }
+  }
 
   /* set active toast. */
   const add = ({message, title, type}, dismissOpt) => {
@@ -65,12 +72,7 @@ function ToastProvider(props) {
       _isActive: true,
     };
 
-    if (autoDismissQ.length) {
-      for (const fnId of autoDismissQ) {
-        window.clearTimeout(fnId);
-      }
-      setAutoDismissQ([]);
-    }
+    resetAutoDismissQ();
 
     if (activeToast) {
       inactive();
@@ -82,27 +84,20 @@ function ToastProvider(props) {
     }
 
     if (isAutoDismiss) {
-      const timeoutIds = (() => {
-        const a = setTimeout(() => {
-          inactive();
-        }, dismissAfterWhile);
+      const a = setTimeout(() => {
+        inactive();
+      }, dismissAfterWhile);
 
-        const b = setTimeout(() => {
-          remove();
-        }, dismissAfterWhile + 500);
-        return [a, b];
-      })();
-      setAutoDismissQ(timeoutIds);
+      const b = setTimeout(() => {
+        remove();
+      }, dismissAfterWhile + animDuration + 200);
+
+      setAutoDismissQ([a, b]);
     }
   };
 
   const removeWithDelay = () => {
-    if (autoDismissQ.length) {
-      for (const fnId of autoDismissQ) {
-        window.clearTimeout(fnId);
-      }
-      setAutoDismissQ([]);
-    }
+    resetAutoDismissQ();
     inactive();
     setTimeout(() => {
       remove();

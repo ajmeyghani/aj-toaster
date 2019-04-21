@@ -9,7 +9,7 @@
   --aj-toaster__info-text: #fff;
   --aj-toaster__failure-text: #fff;
   --aj-toaster__width: 310px;
-  --animation-duration: 300ms;
+  --aj-toaster__animation-duration: 300ms;
 
   /* default theme styles */
   width: var(--aj-toaster__width);
@@ -137,11 +137,11 @@
 .aj-toaster.--active {
   opacity: 1;
   transform: scale(1) translateY(0);
-  transition: opacity var(--animation-duration) ease-in-out 50ms,
-              transform var(--animation-duration) ease-in-out 0ms;
+  transition: opacity var(--aj-toaster__animation-duration) ease-in-out 50ms,
+              transform var(--aj-toaster__animation-duration) ease-in-out 0ms;
 }
 .aj-toaster.--inactive {
   opacity: 0;
-  transition: all var(--animation-duration) ease-in-out;
+  transition: all var(--aj-toaster__animation-duration) ease-in-out;
   transition-property: opacity, transform;
 }

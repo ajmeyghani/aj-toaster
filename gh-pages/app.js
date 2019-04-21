@@ -37,10 +37,10 @@ function App() {
     toaster.info("Here is some extra information." +
     "Here is some extra information." +
     "Here is some extra information." +
-    "Here is some extra information. 55" +
     "Here is some extra information." +
     "Here is some extra information." +
-    "Here is some extra information. 66" +
+    "Here is some extra information." +
+    "Here is some extra information." +
     "Here is some extra information END."
     );
   };
