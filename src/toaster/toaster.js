@@ -1,4 +1,5 @@
-import React, {createContext, useState, useContext, useEffect} from "react";
+import React, {createContext, useState, useContext, useEffect, useRef} from "react";
+import {animationDurationFromCssProp} from "toaster/utils";
 import "toaster/toaster.css";
 
 const ToasterContext = createContext();
@@ -10,27 +11,34 @@ const TYPES = {
   info: "info",
 };
 
+const DEFAULT_ANIMATION_DURATION = 300; /* ms */
+const DEFAULT_THEME = "theme1";
+
+
+
 function ToastProvider(props) {
   const [activeToast, setActiveToast] = useState(null);
-  const [timeOuts, setTimeouts] = useState([]);
-  const theme = props.theme || "theme1";
+  const [autoDismissQ, setAutoDismissQ] = useState([]);
+  const [animDuration, setAnimDuration] = useState(200);
+  const toasterRef = useRef(null);
+  const theme = props.theme || DEFAULT_THEME;
 
   /* remove active toast */
   const remove = id => setActiveToast(null);
+  const inactive = id => setActiveToast(prev => ({
+    ...prev, _isActive: false,
+  }));
 
-  /* inactive ro active */
-  const inactive = id => setActiveToast(prev => ({...prev, _isActive: false}));
-  const active = id => setActiveToast(prev => ({...prev, _isActive: true}));
-
-  /* TODO */
-  /* manage timeout functions */
+  /* get animation duration from the css property. */
   useEffect(() => {
-    return () => {
-      if (timeOuts.length > 5) {
-        setTimeouts([]);
-      }
-    };
-  }, [timeOuts]);
+    if (toasterRef.current) {
+      const durationValue = animationDurationFromCssProp(
+        toasterRef.current, "--animation-duration");
+
+      setAnimDuration(
+        durationValue || DEFAULT_ANIMATION_DURATION);
+    }
+  }, [activeToast]);
 
   /* set active toast. */
   const add = ({message, title, type}, dismissOpt) => {
@@ -39,8 +47,12 @@ function ToastProvider(props) {
         "Need to provide a message and a type.");
     }
 
-    const isAutoDismiss = dismissOpt ? Boolean(dismissOpt.dismiss) : false;
-    const dismissAfterWhile = isAutoDismiss ? dismissOpt.dismiss : 0;
+    const isAutoDismiss = dismissOpt ?
+      Boolean(dismissOpt.dismiss) : false;
+
+    const dismissAfterWhile = isAutoDismiss ?
+      dismissOpt.dismiss : 0;
+
     const id = +new Date();
 
     const newToast = {
@@ -53,28 +65,48 @@ function ToastProvider(props) {
       _isActive: true,
     };
 
-    setActiveToast(newToast);
+    if (autoDismissQ.length) {
+      for (const fnId of autoDismissQ) {
+        window.clearTimeout(fnId);
+      }
+      setAutoDismissQ([]);
+    }
+
+    if (activeToast) {
+      inactive();
+      setTimeout(() => {
+        setActiveToast(newToast);
+      }, animDuration);
+    } else {
+      setActiveToast(newToast);
+    }
 
     if (isAutoDismiss) {
-      const timeoutId = ((id) => {
-        let a = setTimeout(() => {
+      const timeoutIds = (() => {
+        const a = setTimeout(() => {
           inactive();
         }, dismissAfterWhile);
 
-        let b = setTimeout(() => {
-          remove(id);
+        const b = setTimeout(() => {
+          remove();
         }, dismissAfterWhile + 500);
         return [a, b];
-      })(id);
-      setTimeouts(prev => [...prev, [timeoutId]]);
+      })();
+      setAutoDismissQ(timeoutIds);
     }
   };
 
-  const removeWithDelay = (id) => {
+  const removeWithDelay = () => {
+    if (autoDismissQ.length) {
+      for (const fnId of autoDismissQ) {
+        window.clearTimeout(fnId);
+      }
+      setAutoDismissQ([]);
+    }
     inactive();
     setTimeout(() => {
-      remove(id);
-    }, 350);
+      remove();
+    }, animDuration);
   };
 
   /* helpers for different message types */
@@ -107,13 +139,13 @@ function ToastProvider(props) {
       value={{add, success, failure, warning, info, activeToast}}>
       {
         !activeToast ? null :
-        <div className={`aj-toaster-wrapper --${theme}`}>
+        <div ref={toasterRef}
+        className={`aj-toaster-wrapper --${theme}`}>
           <Toast
           toast={activeToast}
           remove={removeWithDelay} />
         </div>
       }
-
       {props.children}
     </ToasterContext.Provider>
   );
@@ -124,26 +156,30 @@ function Toast(props) {
     return null;
   }
 
-  const {id, title, message, type} = props.toast;
   const {remove, toast} = props;
+  const {title, message, type} = toast;
   const [isActive, setIsActive] = useState(false);
 
-  const onRemove = id => () => remove(id);
+  const onRemove = () => () => remove();
 
+  /* handles adding or removing active class for
+  * show/hide animations.
+  */
   useEffect(() => {
     setIsActive(toast._isActive ? true : false);
   }, [toast._isActive]);
 
   return (
-    <div className={`aj-toaster aj-toaster--${type} ${isActive ?"active" : "inactive"}`}>
+    <div className={`aj-toaster aj-toaster--${type} ${isActive ?"--active" : "--inactive"}`}>
       <div className="aj-toaster__content">
         {
-         title ? <p className="aj-toaster__title">{title}</p> : null
+         title ?
+          <p className="aj-toaster__title">{title}</p> : null
         }
         <p className="aj-toaster__message">{message}</p>
       </div>
       <div className="aj-toaster__dismiss">
-        <button onClick={onRemove(id)}>
+        <button onClick={onRemove()}>
         &times;
         </button>
       </div>

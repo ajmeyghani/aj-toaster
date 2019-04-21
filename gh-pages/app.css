@@ -18,7 +18,7 @@
   margin-right: 10px;
 }
 
-.aj-toaster.--theme3 {
+.aj-toaster-wrapper.--theme3 {
   --aj-toaster__success: green;
   --aj-toaster__failure: red;
   --aj-toaster__info: blue;
@@ -29,5 +29,12 @@
   --aj-toaster__info-text: white;
   --aj-toaster__failure-text: white;
 
-  --aj-toaster__width: 300px;
+  --aj-toaster__width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.aj-toaster-wrapper.--theme3 .aj-toaster {
+  border-radius: 0
 }

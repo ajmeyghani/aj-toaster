@@ -7,7 +7,7 @@ function App() {
   const toaster = useToaster();
 
   useEffect(() => {
-    toaster.success("Welcome to React Toaster!", {dismiss: 2e3});
+    // toaster.success("Welcome to React Toaster!", {dismiss: 2e3});
   }, []);
 
   const addServerError = () => {
@@ -17,7 +17,7 @@ function App() {
       type: "failure",
     },
     {
-      dismiss: 0,
+      dismiss: 2000,
     });
   };
 

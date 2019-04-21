@@ -1,17 +1,17 @@
 .aj-toaster-wrapper {
-  /* defaults */
+  /* default theme properties. */
   --aj-toaster__success: #41d888;
   --aj-toaster__warning: #ffbd02;
   --aj-toaster__info: #0387d7;
   --aj-toaster__failure: #f94416;
-
   --aj-toaster__success-text: #fff;
   --aj-toaster__warning-text: #fff;
   --aj-toaster__info-text: #fff;
   --aj-toaster__failure-text: #fff;
-
   --aj-toaster__width: 310px;
-  /* --- */
+  --animation-duration: 300ms;
+
+  /* default theme styles */
   width: var(--aj-toaster__width);
   display: flex;
   justify-content: center;
@@ -21,22 +21,16 @@
   right: 5px;
 }
 
-/* TODO: add customizable themes; */
-.aj-toaster-wrapper.--theme1 {}
 .aj-toaster-wrapper.--theme2 {
   --aj-toaster__success: #ccf8e4;
   --aj-toaster__failure: #ffe2df;
   --aj-toaster__info: #c8ecff;
   --aj-toaster__warning: #fff3a5;
-
   --aj-toaster__success-text: #5fd296;
   --aj-toaster__warning-text: #f7a255;
   --aj-toaster__info-text: #2cbff2;
   --aj-toaster__failure-text: #f56565;
-
   --aj-toaster__width: 400px;
-}
-.aj-toaster-wrapper.--theme2 {
   width: var(--aj-toaster__width);
 }
 
@@ -138,16 +132,16 @@
 /* animations */
 .aj-toaster {
   opacity: 0;
-  transform: scale(1.1);
+  transform: scale(1) translateY(-50px);
 }
-.aj-toaster.active {
+.aj-toaster.--active {
   opacity: 1;
-  transform: scale(1);
-  transition: opacity 300ms ease-in-out 50ms,
-              transform 300ms ease-in-out 0ms;
+  transform: scale(1) translateY(0);
+  transition: opacity var(--animation-duration) ease-in-out 50ms,
+              transform var(--animation-duration) ease-in-out 0ms;
 }
-.aj-toaster.inactive {
+.aj-toaster.--inactive {
   opacity: 0;
-  transition: all 250ms ease-in-out;
+  transition: all var(--animation-duration) ease-in-out;
   transition-property: opacity, transform;
 }

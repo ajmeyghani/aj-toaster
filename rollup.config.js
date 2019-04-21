@@ -11,7 +11,6 @@ const src = "src/toaster/toaster.js";
 const globals = {
   "prop-types": "PropTypes",
   "react-dom": "ReactDOM",
-  "react-transition-group": "ReactTransitionGroup",
   "react": "React",
 };
 

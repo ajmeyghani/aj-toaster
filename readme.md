@@ -15,8 +15,7 @@ Make sure the following are available in your setup:
 
 ```
 "react": "^16.8.0",
-"react-dom": "^16.8.0",
-"react-transition-group": "^2.9.0"
+"react-dom": "^16.8.0"
 ```
 
 ## Usage
