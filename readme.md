@@ -1,4 +1,4 @@
-# Toast Provider for React [WIP]
+# Toast Provider for React
 
 ## Install
 
