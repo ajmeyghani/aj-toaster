@@ -9,7 +9,7 @@
   --aj-toaster__info-text: #fff;
   --aj-toaster__failure-text: #fff;
   --aj-toaster__width: 310px;
-  --aj-toaster__animation-duration: 300ms;
+  --aj-toaster__animation-duration: 350ms;
 
   /* default theme styles */
   width: var(--aj-toaster__width);

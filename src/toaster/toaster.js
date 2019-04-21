@@ -17,7 +17,8 @@ const DEFAULT_THEME = "theme1";
 function ToastProvider(props) {
   const [activeToast, setActiveToast] = useState(null);
   const [autoDismissQ, setAutoDismissQ] = useState([]);
-  const [animDuration, setAnimDuration] = useState(200);
+  const [isInTransition, setIsInTransition] = useState(false);
+  const [animDuration, setAnimDuration] = useState(DEFAULT_ANIMATION_DURATION);
   const toasterRef = useRef(null);
   const theme = props.theme || DEFAULT_THEME;
 
@@ -54,6 +55,10 @@ function ToastProvider(props) {
         "Need to provide a message and a type.");
     }
 
+    if (isInTransition) {
+      return;
+    }
+
     const isAutoDismiss = dismissOpt ?
       Boolean(dismissOpt.dismiss) : false;
 
@@ -73,6 +78,11 @@ function ToastProvider(props) {
     };
 
     resetAutoDismissQ();
+
+    setIsInTransition(true);
+    setTimeout(() => {
+      setIsInTransition(false);
+    }, animDuration * 2);
 
     if (activeToast) {
       inactive();
