@@ -82,7 +82,6 @@ colors. In the example below we are defining `mytheme`:
 .aj-toaster-wrapper.--mytheme .aj-toaster {
   border-radius: 0
 }
-
 ```
 
 After defining the theme, just pass in the name of the class name, without the
@@ -93,9 +92,7 @@ double dashes, when using the provider:
 </Toater>
 ```
 
-## Options
-
-All this stuff may change with v1.0.0.
+## API
 
 - The provider takes an optional theme prop: `<Toaster theme="mytheme"></Toaster>`.
 - The `toaster` context provides the following methods:
@@ -119,7 +116,7 @@ toaster.add(
 
 - `success`, `warning`, `info`, `failure`: all take a string for the message and
 call `add` for you with some default titles. Just like `add`, you can specify an optional `dismiss` config
-to auto dismiss a toast.
+to auto dismiss a toast. If you want to change the title, you can pass in an optional third argument.
 
 ## Development
 
@@ -133,7 +130,3 @@ to auto dismiss a toast.
 
 - As the maintainer you can then run `yarn gh` to publish the new version to Github.
 - As the maintainer, to publish a new version, run `yarn publish:<patch|minor|major>`. For example, to publish a new patch version run `yarn publish:patch`. Make sure that the working directory is clean, no changes to commit.
-
-**TODOS**
-
-- [] Make version 1.0.0 and improve animations.
