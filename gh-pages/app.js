@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div className="my-page">
-      <h2 className="siimple-h2">Toaster 0.4.3</h2>
+      <h2 className="siimple-h2">Toaster 1.0.0</h2>
       <div className="buttons">
         <button
           onClick={_ => {
