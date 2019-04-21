@@ -1,5 +1,4 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
-import {CSSTransition, TransitionGroup} from "react-transition-group";
 import "toaster/toaster.css";
 
 const ToasterContext = createContext();
@@ -12,9 +11,16 @@ const TYPES = {
 };
 
 function ToastProvider(props) {
-  const [toasts, setToasts] = useState([]);
+  const [activeToast, setActiveToast] = useState(null);
   const [timeOuts, setTimeouts] = useState([]);
   const theme = props.theme || "theme1";
+
+  /* remove active toast */
+  const remove = id => setActiveToast(null);
+
+  /* inactive ro active */
+  const inactive = id => setActiveToast(prev => ({...prev, _isActive: false}));
+  const active = id => setActiveToast(prev => ({...prev, _isActive: true}));
 
   /* TODO */
   /* manage timeout functions */
@@ -26,7 +32,7 @@ function ToastProvider(props) {
     };
   }, [timeOuts]);
 
-  /* adds toasts to the list */
+  /* set active toast. */
   const add = ({message, title, type}, dismissOpt) => {
     if (!message || !type) {
       throw new Error(
@@ -34,7 +40,7 @@ function ToastProvider(props) {
     }
 
     const isAutoDismiss = dismissOpt ? Boolean(dismissOpt.dismiss) : false;
-    const dismissPeriod = isAutoDismiss ? dismissOpt.dismiss : 0;
+    const dismissAfterWhile = isAutoDismiss ? dismissOpt.dismiss : 0;
     const id = +new Date();
 
     const newToast = {
@@ -43,25 +49,33 @@ function ToastProvider(props) {
       title: title || "",
       type: type,
       isAutoDismiss,
-      dismissPeriod,
+      dismissAfterWhile,
+      _isActive: true,
     };
 
-    setToasts([newToast]);
+    setActiveToast(newToast);
 
     if (isAutoDismiss) {
       const timeoutId = ((id) => {
-        return setTimeout(() => {
+        let a = setTimeout(() => {
+          inactive();
+        }, dismissAfterWhile);
+
+        let b = setTimeout(() => {
           remove(id);
-        }, dismissPeriod);
+        }, dismissAfterWhile + 500);
+        return [a, b];
       })(id);
-      setTimeouts(prev => [...prev, timeoutId]);
+      setTimeouts(prev => [...prev, [timeoutId]]);
     }
   };
 
-  /* remove items from the toasts list */
-  const remove = id => setToasts(
-    prev => prev.filter(t => t.id !== id));
-
+  const removeWithDelay = (id) => {
+    inactive();
+    setTimeout(() => {
+      remove(id);
+    }, 350);
+  };
 
   /* helpers for different message types */
   const success = (message, dismissOpt) => add({
@@ -90,33 +104,38 @@ function ToastProvider(props) {
 
   return (
     <ToasterContext.Provider
-      value={{add, success, failure, warning, info, toasts}}>
-      <div className={`aj-toaster --${theme}`}>
-          <TransitionGroup className="aj-toaster__items">
-            {toasts.map((toast) => (
-            <CSSTransition
-              key={toast.id} timeout={300} classNames="--toast-item">
+      value={{add, success, failure, warning, info, activeToast}}>
+      {
+        !activeToast ? null :
+        <div className={`aj-toaster-wrapper --${theme}`}>
+          <Toast
+          toast={activeToast}
+          remove={removeWithDelay} />
+        </div>
+      }
 
-              <Toast
-              toast={toast}
-              remove={remove} />
-
-            </CSSTransition>
-            ))}
-          </TransitionGroup>
-      </div>
       {props.children}
     </ToasterContext.Provider>
   );
 }
 
 function Toast(props) {
+  if (!props.toast) {
+    return null;
+  }
+
   const {id, title, message, type} = props.toast;
-  const {remove} = props;
+  const {remove, toast} = props;
+  const [isActive, setIsActive] = useState(false);
+
   const onRemove = id => () => remove(id);
 
+  useEffect(() => {
+    setIsActive(toast._isActive ? true : false);
+  }, [toast._isActive]);
+
   return (
-    <div className={`--${type}`}>
+    <div className={`aj-toaster aj-toaster--${type} ${isActive ?"active" : "inactive"}`}>
       <div className="aj-toaster__content">
         {
          title ? <p className="aj-toaster__title">{title}</p> : null
