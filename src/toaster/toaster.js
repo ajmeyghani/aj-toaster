@@ -145,7 +145,7 @@ function ToastProvider(props) {
 
   return (
     <ToasterContext.Provider
-      value={{set, add, success, failure, warning, info}}>
+      value={{set, add, success, failure, warning, info, clear: removeWithAnimation}}>
       {
         !activeToast ? null :
         <div ref={toasterRef}

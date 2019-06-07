@@ -15,6 +15,11 @@ function App() {
       <h2 className="siimple-h2">Toaster 1.0.0</h2>
       <div className="buttons">
         <button
+          className="siimple-btn siimple-btn--navy"
+          onClick={_ => {
+          toaster.clear();
+        }}>Clear</button>
+        <button
           onClick={_ => {
             toaster.add({
               title: "An error occurred...",

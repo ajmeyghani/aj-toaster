@@ -118,6 +118,8 @@ toaster.add(
 call `add` for you with some default titles. Just like `add`, you can specify an optional `dismiss` config
 to auto dismiss a toast. If you want to change the title, you can pass in an optional third argument.
 
+- `clear` will clear the existing active toast.
+
 ## Development
 
 - Install the latest version of Node 10 `nvm install 10`.
