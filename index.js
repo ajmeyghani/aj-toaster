@@ -197,7 +197,8 @@
         success,
         failure,
         warning,
-        info
+        info,
+        clear: removeWithAnimation
       }
     }, !activeToast ? null : React__default.createElement("div", {
       ref: toasterRef,
@@ -267,6 +268,11 @@
     }, "Toaster 1.0.0"), React__default.createElement("div", {
       className: "buttons"
     }, React__default.createElement("button", {
+      className: "siimple-btn siimple-btn--navy",
+      onClick: _ => {
+        toaster.clear();
+      }
+    }, "Clear"), React__default.createElement("button", {
       onClick: _ => {
         toaster.add({
           title: "An error occurred...",
