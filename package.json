@@ -63,6 +63,6 @@
     "lodash": "^4.17.15",
     "mixin-deep": "^2.0.1",
     "serialize-javascript": "^2.1.2",
-    "set-value": "^3.0.1"
+    "set-value": "^4.0.1"
   }
 }
